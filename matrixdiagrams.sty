@@ -3,17 +3,17 @@
 %
 % USAGE OVERVIEW
 % --------------
-% Diagrams use normalized coordinates: x in [0,1], y in [0,aspect].
-% For square matrices aspect=1, so coordinates are in [0,1]x[0,1].
-% For a matrix twice as tall as wide, aspect=2 and y runs from 0 to 2.
-%
 % \matrixdiagram[<scale>][<aspect>]{<tikz content>}
 %   scale  -- overall size multiplier (default 1)
 %   aspect -- height/width ratio (default 1 = square)
-%   content draws inside [0,1] x [0,aspect].
 %
-% All built-in commands adapt automatically. Use \mdH inside content
-% to refer to the top edge (= aspect value).
+% The drawing canvas inside content is x in [0,1], y in [0,aspect]
+% (\mdH = aspect, the y-coordinate of the top edge).
+%
+% Position-taking commands (mdFill, mdLabel, mdLabelRaw, mdHLine, mdSpike,
+% mdDiagFrom and its band/clipped variants) take y as a fraction of the
+% height, in [0,1] regardless of aspect, scaled internally by \mdH. Raw
+% \draw code inside content uses canvas coordinates directly.
 %
 % COORDINATE SYSTEM (aspect=1)         TALL MATRIX (aspect=2)
 %   (0,1) -- (1,1)                       (0,2) -- (1,2)
@@ -35,9 +35,11 @@
 \newdimen\md@bracewidth
 \newdimen\md@innersep
 \newdimen\md@baseunit
+\newdimen\md@hsep
 \md@bracewidth=3pt
 \md@innersep=2pt
 \md@baseunit=0.5cm
+\md@hsep=3pt
 
 % \md@H: current aspect ratio = y-coordinate of top edge. Default 1.
 \def\md@H{1}
@@ -52,6 +54,7 @@
 % -----------------------------------------------------------------------
 \newcommand{\md@draw@box}[3]{%
   \def\md@H{#2}%
+  \kern\md@hsep
   \vcenter{\hbox{%
     \tikz[baseline={(MDNODO.base)}]{%
       \node[inner sep=\md@innersep](MDNODO){%
@@ -74,6 +77,7 @@
         -- ($(MDNODO.south east)+(-\md@bracewidth,0)$);
     }%
   }}%
+  \kern\md@hsep
 }
 
 % -----------------------------------------------------------------------
@@ -116,19 +120,19 @@
 % \mdDiagBand — tridiagonal band
 \newcommand{\mdDiagBand}{\mdDiagBandN{3}}
 
-% \mdFill[color]{x0}{y0}{x1}{y1}
+% \mdFill[color]{x0}{y0}{x1}{y1} — y0,y1 are fractions of the height, in [0,1]
 \newcommand{\mdFill}[5][gray!20]{%
-  \fill[#1] (#2,#3) rectangle (#4,#5);%
+  \fill[#1] (#2,{#3*\md@H}) rectangle (#4,{#5*\md@H});%
 }
 
-% \mdLabel[fill]{x}{y}{text} — math-mode label, optional node fill color
+% \mdLabel[fill]{x}{y}{text} — math-mode label, optional node fill color; y in [0,1]
 \newcommand{\mdLabel}[4][none]{%
-  \node[fill=#1] at (#2,#3) {$#4$};%
+  \node[fill=#1] at (#2,{#3*\md@H}) {$#4$};%
 }
 
-% \mdLabelRaw[fill]{x}{y}{text} — raw text label, optional node fill color
+% \mdLabelRaw[fill]{x}{y}{text} — raw text label, optional node fill color; y in [0,1]
 \newcommand{\mdLabelRaw}[4][none]{%
-  \node[fill=#1] at (#2,#3) {#4};%
+  \node[fill=#1] at (#2,{#3*\md@H}) {#4};%
 }
 
 % \mdLabelCenter{text} — math label at the center (x=0.5, y=H/2)
@@ -141,9 +145,9 @@
   \draw[thick] (#1,0) -- (#1,\md@H);%
 }
 
-% \mdHLine{y} — full-width horizontal line (0 to 1)
+% \mdHLine{y} — full-width horizontal line; y is a fraction of the height, in [0,1]
 \newcommand{\mdHLine}[1]{%
-  \draw[thick] (0,#1) -- (1,#1);%
+  \draw[thick] (0,{#1*\md@H}) -- (1,{#1*\md@H});%
 }
 
 % -----------------------------------------------------------------------
@@ -161,10 +165,10 @@
 %   \mdDiagBandFrom{0.5}{0}{1}{0.5}    % bottom-left=(0.5,0), top-right=(1,0.5)
 % -----------------------------------------------------------------------
 
-% \mdDiagBandNFrom{n}{x1}{y1}{x2}{y2}
+% \mdDiagBandNFrom{n}{x1}{y1}{x2}{y2} — y1,y2 are fractions of the height, in [0,1]
 \newcommand{\mdDiagBandNFrom}[5]{%
   \begin{scope}%
-    \clip (#2,#3) rectangle (#4,#5);%
+    \clip (#2,{#3*\md@H}) rectangle (#4,{#5*\md@H});%
     \mdDiagBandN{#1}%
   \end{scope}%
 }
@@ -184,12 +188,13 @@
 % -----------------------------------------------------------------------
 \def\md@tl{tl}\def\md@tr{tr}\def\md@bl{bl}\def\md@br{br}
 
+% \mdSpike{x}{y}{dir} — y is a fraction of the height, in [0,1]
 \newcommand{\mdSpike}[3]{%
   \def\md@spikedir{#3}%
-  \ifx\md@spikedir\md@tl \draw[thick] (#1,\md@H) -- (#1,#2) -- (0,#2);%
-  \else\ifx\md@spikedir\md@tr \draw[thick] (#1,\md@H) -- (#1,#2) -- (1,#2);%
-  \else\ifx\md@spikedir\md@bl \draw[thick] (#1,0) -- (#1,#2) -- (0,#2);%
-  \else\ifx\md@spikedir\md@br \draw[thick] (#1,0) -- (#1,#2) -- (1,#2);%
+  \ifx\md@spikedir\md@tl \draw[thick] (#1,\md@H) -- (#1,{#2*\md@H}) -- (0,{#2*\md@H});%
+  \else\ifx\md@spikedir\md@tr \draw[thick] (#1,\md@H) -- (#1,{#2*\md@H}) -- (1,{#2*\md@H});%
+  \else\ifx\md@spikedir\md@bl \draw[thick] (#1,0) -- (#1,{#2*\md@H}) -- (0,{#2*\md@H});%
+  \else\ifx\md@spikedir\md@br \draw[thick] (#1,0) -- (#1,{#2*\md@H}) -- (1,{#2*\md@H});%
   \fi\fi\fi\fi
 }
 

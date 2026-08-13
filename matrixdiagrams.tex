@@ -307,28 +307,28 @@ $
 
 \medskip
 
-With aspect $= 2$ ($y$-coordinates run to 2):
+With aspect $= 2$ ($y$ is still a fraction of the height, in $[0,1]$):
 \begin{center}
 \begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3][2]{\mdFill[green!25]{0}{1}{0.5}{2}}
+$  \matrixdiagram[3][2]{\mdFill[green!25]{0}{0.5}{0.5}{1}}
 $
 &
-\verb|\matrixdiagram[3][2]{\mdFill[green!25]{0}{1}{0.5}{2}}| \\ [4em]
-$  \matrixdiagram[3][2]{\mdFill[blue!15]{0}{0}{1}{1}}
+\verb|\matrixdiagram[3][2]{\mdFill[green!25]{0}{0.5}{0.5}{1}}| \\ [4em]
+$  \matrixdiagram[3][2]{\mdFill[blue!15]{0}{0}{1}{0.5}}
 $
 &
-\verb|\matrixdiagram[3][2]{\mdFill[blue!15]{0}{0}{1}{1}}| \\ [4em]
-$  \matrixdiagram[3][2]{\mdFill[gray!15]{0}{0}{0.75}{2}}
+\verb|\matrixdiagram[3][2]{\mdFill[blue!15]{0}{0}{1}{0.5}}| \\ [4em]
+$  \matrixdiagram[3][2]{\mdFill[gray!15]{0}{0}{0.75}{1}}
 $
 &
-\verb|\matrixdiagram[3][2]{\mdFill[gray!15]{0}{0}{0.75}{2}}| 
+\verb|\matrixdiagram[3][2]{\mdFill[gray!15]{0}{0}{0.75}{1}}|
 \end{tabular}
 \end{center}
 
 \subsection{\texttt{\textbackslash mdVLine\{x\}} and \texttt{\textbackslash mdHLine\{y\}}}
 
-\verb|\mdVLine{x}| runs from $(x,0)$ to $(x,H)$;
-\verb|\mdHLine{y}| runs from $(0,y)$ to $(1,y)$.
+\verb|\mdVLine{x}| runs the full height at $x\in[0,1]$;
+\verb|\mdHLine{y}| runs the full width at fractional height $y\in[0,1]$.
 \begin{center}
 \begin{tabular}{l@{\qquad}l}
 $  \matrixdiagram[3]{\mdVLine{0.5}}
@@ -361,14 +361,14 @@ $  \matrixdiagram[3][2]{\mdVLine{0.5}}
 $
 &
 \verb|\matrixdiagram[3][2]{\mdVLine{0.5}}| \\ [5em]
-$  \matrixdiagram[3][2]{\mdHLine{1.0}}
+$  \matrixdiagram[3][2]{\mdHLine{0.5}}
 $
 &
-\verb|\matrixdiagram[3][2]{\mdHLine{1.0}}| \\ [5em]
-$  \matrixdiagram[3][2]{\mdVLine{0.5}\mdHLine{1.0}}
+\verb|\matrixdiagram[3][2]{\mdHLine{0.5}}| \\ [5em]
+$  \matrixdiagram[3][2]{\mdVLine{0.5}\mdHLine{0.5}}
 $
 &
-\verb|\matrixdiagram[3][2]{\mdVLine{0.5}\mdHLine{1.0}}|
+\verb|\matrixdiagram[3][2]{\mdVLine{0.5}\mdHLine{0.5}}|
 \end{tabular}
 \end{center}
 
@@ -395,19 +395,19 @@ $
 \verb|}|
 \end{tabular} \\ [5em]
 $  \matrixdiagram[3][2]{
-    \mdFill[gray!15]{0}{0}{0.75}{2}
+    \mdFill[gray!15]{0}{0}{0.75}{1}
     \mdVLine{0.75}
-    \mdLabel{0.375}{1}{A}
-    \mdLabel{0.875}{1}{b}
+    \mdLabel{0.375}{0.5}{A}
+    \mdLabel{0.875}{0.5}{b}
   }
 $
 &
 \begin{tabular}[c]{@{}l@{}}
 \verb|\matrixdiagram[3][2]{| \\
-\verb|  \mdFill[gray!15]{0}{0}{0.75}{2}| \\
+\verb|  \mdFill[gray!15]{0}{0}{0.75}{1}| \\
 \verb|  \mdVLine{0.75}| \\
-\verb|  \mdLabel{0.375}{1}{A}| \\
-\verb|  \mdLabel{0.875}{1}{b}| \\
+\verb|  \mdLabel{0.375}{0.5}{A}| \\
+\verb|  \mdLabel{0.875}{0.5}{b}| \\
 \verb|}|
 \end{tabular}
 \end{tabular}
@@ -543,30 +543,30 @@ $
 \end{tabular}
 \end{center}
 
-With aspect $= 2$, corner at mid-height $(0.5, 1)$:
+With aspect $= 2$, corner at mid-height $(0.5, 0.5)$:
 \begin{center}
 \begin{tabular}{l@{\qquad}l}
 $  \matrixdiagram[3][2]{
-    \mdFill[green!20]{0}{1}{0.5}{2}
-    \mdSpike{0.5}{1}{tl}
+    \mdFill[green!20]{0}{0.5}{0.5}{1}
+    \mdSpike{0.5}{0.5}{tl}
   }
 $
 &
-\verb|\matrixdiagram[3][2]{\mdFill[green!20]{0}{1}{0.5}{2}\mdSpike{0.5}{1}{tl}}| \\ [5em]
+\verb|\matrixdiagram[3][2]{\mdFill[green!20]{0}{0.5}{0.5}{1}\mdSpike{0.5}{0.5}{tl}}| \\ [5em]
 $  \matrixdiagram[3][2]{
-    \mdFill[blue!15]{0.5}{1}{1}{2}
-    \mdSpike{0.5}{1}{tr}
+    \mdFill[blue!15]{0.5}{0.5}{1}{1}
+    \mdSpike{0.5}{0.5}{tr}
   }
 $
 &
-\verb|\matrixdiagram[3][2]{\mdFill[blue!15]{0.5}{1}{1}{2}\mdSpike{0.5}{1}{tr}}| \\ [5em]
+\verb|\matrixdiagram[3][2]{\mdFill[blue!15]{0.5}{0.5}{1}{1}\mdSpike{0.5}{0.5}{tr}}| \\ [5em]
 $  \matrixdiagram[3][2]{
-    \mdFill[red!15]{0}{0}{0.5}{1}
-    \mdSpike{0.5}{1}{bl}
+    \mdFill[red!15]{0}{0}{0.5}{0.5}
+    \mdSpike{0.5}{0.5}{bl}
   }
 $
 &
-\verb|\matrixdiagram[3][2]{\mdFill[red!15]{0}{0}{0.5}{1}\mdSpike{0.5}{1}{bl}}|
+\verb|\matrixdiagram[3][2]{\mdFill[red!15]{0}{0}{0.5}{0.5}\mdSpike{0.5}{0.5}{bl}}|
 \end{tabular}
 \end{center}
 
@@ -597,17 +597,17 @@ $
 \end{tabular}
 \\ [2em]
 $  \matrixdiagram[3][2]{
-    \mdFill[green!20]{0}{1}{0.5}{2}
-    \mdSpike{0.5}{1}{tl}
-    \mdDiagFrom{0.5}{1}{1}{0}
+    \mdFill[green!20]{0}{0.5}{0.5}{1}
+    \mdSpike{0.5}{0.5}{tl}
+    \mdDiagFrom{0.5}{0.5}{1}{0}
   }
 $
 &
 \begin{tabular}[c]{@{}l@{}}
 \verb|\matrixdiagram[3][2]{| \\
-\verb|  \mdFill[green!20]{0}{1}{0.5}{2}|\\
-\verb|  \mdSpike{0.5}{1}{tl}|\\ 
-\verb|  \mdDiagFrom{0.5}{1}{1}{0}|\\
+\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}|\\
+\verb|  \mdSpike{0.5}{0.5}{tl}|\\
+\verb|  \mdDiagFrom{0.5}{0.5}{1}{0}|\\
 \verb|}|
 \end{tabular}
 \end{tabular}
@@ -632,17 +632,17 @@ $
 \verb|}|
 \end{tabular} \\ [2em]
 $  \matrixdiagram[3][2]{
-    \mdFill[green!20]{0}{1}{0.5}{2}
-    \mdSpike{0.5}{1}{tl}
-    \mdDiagBandFrom{0.5}{1}{1}{0}
+    \mdFill[green!20]{0}{0.5}{0.5}{1}
+    \mdSpike{0.5}{0.5}{tl}
+    \mdDiagBandFrom{0.5}{0.5}{1}{0}
   }
 $
 &
 \begin{tabular}[c]{@{}l@{}}
 \verb|\matrixdiagram[3][2]{| \\
-\verb|  \mdFill[green!20]{0}{1}{0.5}{2}| \\
-\verb|  \mdSpike{0.5}{1}{tl}| \\
-\verb|  \mdDiagBandFrom{0.5}{1}{1}{0}| \\
+\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}| \\
+\verb|  \mdSpike{0.5}{0.5}{tl}| \\
+\verb|  \mdDiagBandFrom{0.5}{0.5}{1}{0}| \\
 \verb|}|
 \end{tabular}
 \end{tabular}
@@ -709,7 +709,6 @@ $
 $  \matrixdiagram[3][2]{\mdLabelCenter{A}}
   \quad=\quad
   \matrixdiagram[3][2]{\mdLabelCenter{Q}}
-  \,
   \matrixdiagram[3]{\mdLabelCenter{R}}
 $
 &
@@ -727,9 +726,7 @@ $
 $  \matrixdiagram[3]{\mdLabelCenter{A}}
   \quad=\quad
   \matrixdiagram[3]{\mdLabelCenter{U}}
-  \,
   \matrixdiagram[3]{\mdBidiagUpper}
-  \,
   \matrixdiagram[3]{\mdLabelCenter{V^T}}
 $
 &
@@ -746,9 +743,7 @@ $
 \begin{center}
 \begin{tabular}{l@{\qquad}l}
 $  \matrixdiagram[3]{\mdLabelCenter{Q^T}}
-  \,
   \matrixdiagram[3]{\mdDiagBand\mdLabel{0.25}{0.15}{T_m}}
-  \,
   \matrixdiagram[3]{\mdLabelCenter{Q}}
   \quad=\quad
   \matrixdiagram[3]{
@@ -779,9 +774,7 @@ $
 \begin{center}
 \begin{tabular}{l@{\qquad}l}
 $  \matrixdiagram[3]{\mdLabelCenter{Q^T}}
-  \,
   \matrixdiagram[3]{\mdLabelCenter{A}}
-  \,
   \matrixdiagram[3]{\mdLabelCenter{Q}}
   \quad=\quad
   \matrixdiagram[3]{\mdHessenberg\mdLabel{0.7}{0.55}{H}}
@@ -805,7 +798,6 @@ $ \matrixdiagram[4]{\mdLabelCenter{A}}
  \matrixdiagram[2]{\mdLabelCenter{P_m}}
   \quad=\quad
   \matrixdiagram[2]{\mdLabelCenter{P_m}}
-  \,
   \matrixdiagram[2]{\mdDiagBand\mdLabel{0.25}{0.15}{T_m}}
   +
   \matrixdiagram[2]{
@@ -867,13 +859,11 @@ $  \matrixdiagram[3]{
     \mdLabel{0.5}{0.5}{\overline{Q}_{k}^T}
     \mdLabel{0.93}{0.08}{1}
   }
-  \,
   \matrixdiagram[3]{
     \mdDiag
     \draw[thick] (0,0) -- (1,0) -- (1,\mdH);
     \mdLabel{0.25}{0.45}{D_{k+1}}
   }
-  \,
   \matrixdiagram[3]{
     \mdFill[magenta!10]{0}{0.15}{0.85}{1}
     \mdLabel{0.5}{0.5}{\overline{Q}_{k}}
@@ -919,6 +909,7 @@ $
 \toprule
 \verb|\matrixdiagram[s][a]{c}|
   & Main command. \texttt{s} = scale (def.\ 1), \texttt{a} = aspect (def.\ 1 = square). \\
+  & Position args below are fractions $x,y \in [0,1]$, any aspect. \\
 \midrule
 \verb|\mdDiag|
   & Anti-diagonal $(0,H)\to(1,0)$. \\
@@ -945,9 +936,9 @@ $
 \verb|\mdFill[col]{x0}{y0}{x1}{y1}|
   & Filled rectangle. Default color \texttt{gray!20}. \\
 \verb|\mdVLine{x}|
-  & Vertical line, full height $0$ to $H$. \\
+  & Vertical line, full height. \\
 \verb|\mdHLine{y}|
-  & Horizontal line, full width. \\
+  & Horizontal line, full width, at fractional height $y$. \\
 \midrule
 \verb|\mdLabel{x}{y}{text}|
   & Math-mode label at $(x,y)$. \\
