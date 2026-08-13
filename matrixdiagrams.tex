@@ -1,0 +1,971 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=0.8in}
+\usepackage{matrixdiagrams}
+\usepackage{verbatim}
+\usepackage{listings}
+
+\title{\texttt{matrixdiagrams.sty}}
+\author{Kyle Monette}
+\date{\today}
+
+\begin{document}
+\maketitle
+% \tableofcontents
+% \bigskip
+
+% ===================================================================
+\section{Main command}
+
+\noindent \texttt{\textbackslash matrixbrace[scale][aspect]\{content\}}
+% ===================================================================
+
+\subsection{Scale (aspect = 1)}
+
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{l r l r}
+$
+  \matrixbrace[1]{\mbBlank}
+$
+&
+\verb|\matrixbrace[1]{\mbBlank}|
+&
+$
+  \matrixbrace[2]{\mbBlank}
+$
+&
+\verb|\matrixbrace[2]{\mbBlank}| \\ [2em]
+$
+  \matrixbrace[3]{\mbBlank}
+$
+&
+\verb|\matrixbrace[3]{\mbBlank}|
+&
+$
+  \matrixbrace[4]{\mbBlank}
+$
+&
+\verb|\matrixbrace[4]{\mbBlank}| \\ [2em]
+$
+  \matrixbrace[5]{\mbBlank}
+$
+&
+\verb|\matrixbrace[5]{\mbBlank}|
+\end{tabular}
+\end{center}
+
+\subsection{Aspect ratio (scale = 3)}
+
+% Aspect $= 0.5,\ 1,\ 1.5,\ 2,\ 3$:
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{lr lr}
+$
+  \matrixbrace[3][0.5]{\mbBlank}
+$
+&
+\verb|\matrixbrace[3][0.5]{\mbBlank}|
+&
+$
+  \matrixbrace[3][1]{\mbBlank}
+$
+&
+\verb|\matrixbrace[3][1]{\mbBlank}| \\ [2em]
+$
+  \matrixbrace[3][1.5]{\mbBlank}
+$
+&
+\verb|\matrixbrace[3][1.5]{\mbBlank}|
+&
+$
+  \matrixbrace[3][2]{\mbBlank}
+$
+&
+\verb|\matrixbrace[3][2]{\mbBlank}| \\ [2em]
+$
+  \matrixbrace[3][3]{\mbBlank}
+$
+&
+\verb|\matrixbrace[3][3]{\mbBlank}|
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Diagonal commands}
+% ===================================================================
+
+\subsection{\texttt{\textbackslash mbDiag} — main anti-diagonal}
+
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{lr}
+$
+  \matrixbrace[3]{\mbDiag}
+  \qquad
+  \matrixbrace[3][2]{\mbDiag}
+$
+&
+\qquad
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{\mbDiag}| \\
+\verb|\matrixbrace[3][2]{\mbDiag}|
+\end{tabular} \\
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbDiagBand} — tridiagonal band}
+
+Three parallel anti-diagonals with spacing $d = 0.1$.
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{lr}
+$
+  \matrixbrace[3]{\mbDiagBand}
+  \qquad
+  \matrixbrace[3][2]{\mbDiagBand}
+$
+&
+\qquad
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{\mbDiagBand}| \\
+\verb|\matrixbrace[3][2]{\mbDiagBand}|
+\end{tabular} \\
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbDiagBandN\{n\}} — variable band width}
+
+$n = 3, 5, 7, 9$ (spacing fixed at $d=0.1$ per diagonal):
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{l@{\qquad}r}
+$
+  \matrixbrace[3]{\mbDiagBandN{3}}
+$
+&
+\verb|\matrixbrace[3]{\mbDiagBandN{3}}| \\ [2em]
+$
+  \matrixbrace[3]{\mbDiagBandN{5}}
+$
+&
+\verb|\matrixbrace[3]{\mbDiagBandN{5}}| \\ [2em]
+$
+  \matrixbrace[3]{\mbDiagBandN{7}}
+$
+&
+\verb|\matrixbrace[3]{\mbDiagBandN{7}}| \\ [2em]
+$
+  \matrixbrace[3]{\mbDiagBandN{9}}
+$
+&
+\verb|\matrixbrace[3]{\mbDiagBandN{9}}|
+\end{tabular}
+\end{center}
+
+Note: \verb|\mbDiagBandN{3}| is identical to \verb|\mbDiagBand|. With aspect $= 2$:
+
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{l@{\qquad}l}
+$
+  \matrixbrace[3][2]{\mbDiagBandN{3}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbDiagBandN{3}}| \\ [4em]
+$
+  \matrixbrace[3][2]{\mbDiagBandN{5}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbDiagBandN{5}}| \\ [4em]
+$
+  \matrixbrace[3][2]{\mbDiagBandN{7}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbDiagBandN{7}}| 
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Bidiagonal commands}
+% ===================================================================
+
+\subsection{\texttt{\textbackslash mbBidiagUpper} — main + super-diagonal}
+
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{l@{\quad}l l@{\quad}l}
+$
+  \matrixbrace[3]{\mbBidiagUpper}
+$
+&
+\verb|\matrixbrace[3]{\mbBidiagUpper}|
+& 
+$
+  \matrixbrace[3][2]{\mbBidiagUpper}
+$
+&
+\verb|\matrixbrace[3][2]{\mbBidiagUpper}|
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbBidiagLower} — main + sub-diagonal}
+
+\begin{center}
+% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
+\begin{tabular}{l@{\quad}l l @{\quad} l}
+$
+  \matrixbrace[3]{\mbBidiagLower}
+$
+&
+\verb|\matrixbrace[3]{\mbBidiagLower}|
+&
+$
+  \matrixbrace[3][2]{\mbBidiagLower}
+$
+&
+\verb|\matrixbrace[3][2]{\mbBidiagLower}|
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Hessenberg command}
+% ===================================================================
+
+\subsection{\texttt{\textbackslash mbHessenberg} — outline only (default)}
+
+Upper-triangular outline $(0,H)\to(1,H)\to(1,0)$ plus one sub-diagonal.
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbHessenberg}
+$
+&
+\verb|\matrixbrace[3]{\mbHessenberg}| \\ [2em]
+$  \matrixbrace[3][2]{\mbHessenberg}
+$
+&
+\verb|\matrixbrace[3][2]{\mbHessenberg}| \\ [2em]
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbHessenberg[color]} — with fill}
+
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbHessenberg[gray!15]}
+$
+&
+\verb|\matrixbrace[3]{\mbHessenberg[gray!15]}| \\ [2em]
+$  \matrixbrace[3]{\mbHessenberg[blue!15]}
+$
+&
+\verb|\matrixbrace[3]{\mbHessenberg[blue!15]}| \\ [2em]
+$  \matrixbrace[3]{\mbHessenberg[green!20]}
+$
+&
+\verb|\matrixbrace[3]{\mbHessenberg[green!20]}| \\ [2em]
+$  \matrixbrace[3]{\mbHessenberg[orange!20]}
+$
+&
+\verb|\matrixbrace[3]{\mbHessenberg[orange!20]}| \\ [2em]
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Fill and line commands}
+% ===================================================================
+
+\subsection{\texttt{\textbackslash mbFill[color]\{x0\}\{y0\}\{x1\}\{y1\}}}
+
+Four quadrant fills; default color is \texttt{gray!20}:
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbFill[green!30]{0}{0.5}{0.5}{1}}
+$
+&
+\verb|\matrixbrace[3]{\mbFill[green!30]{0}{0.5}{0.5}{1}}| \\ [2em]
+$  \matrixbrace[3]{\mbFill[blue!20]{0.5}{0.5}{1}{1}}
+$
+&
+\verb|\matrixbrace[3]{\mbFill[blue!20]{0.5}{0.5}{1}{1}}| \\ [2em]
+$  \matrixbrace[3]{\mbFill[red!20]{0}{0}{0.5}{0.5}}
+$
+&
+\verb|\matrixbrace[3]{\mbFill[red!20]{0}{0}{0.5}{0.5}}| \\ [2em]
+$  \matrixbrace[3]{\mbFill[orange!25]{0.5}{0}{1}{0.5}}
+$
+&
+\verb|\matrixbrace[3]{\mbFill[orange!25]{0.5}{0}{1}{0.5}}| \\ [2em]
+$  \matrixbrace[3]{\mbFill{0}{0}{1}{1}}
+$
+&
+\verb|\matrixbrace[3]{\mbFill{0}{0}{1}{1}}| \\ [2em]
+\end{tabular}
+\end{center}
+
+\medskip
+
+With aspect $= 2$ ($y$-coordinates run to 2):
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3][2]{\mbFill[green!25]{0}{1}{0.5}{2}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbFill[green!25]{0}{1}{0.5}{2}}| \\ [4em]
+$  \matrixbrace[3][2]{\mbFill[blue!15]{0}{0}{1}{1}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbFill[blue!15]{0}{0}{1}{1}}| \\ [4em]
+$  \matrixbrace[3][2]{\mbFill[gray!15]{0}{0}{0.75}{2}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbFill[gray!15]{0}{0}{0.75}{2}}| 
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbVLine\{x\}} and \texttt{\textbackslash mbHLine\{y\}}}
+
+\verb|\mbVLine{x}| runs from $(x,0)$ to $(x,H)$;
+\verb|\mbHLine{y}| runs from $(0,y)$ to $(1,y)$.
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbVLine{0.5}}
+$
+&
+\verb|\matrixbrace[3]{\mbVLine{0.5}}| \\ [3em]
+$  \matrixbrace[3]{\mbHLine{0.5}}
+$
+&
+\verb|\matrixbrace[3]{\mbHLine{0.5}}| \\ [3em]
+$  \matrixbrace[3]{\mbVLine{0.33}\mbVLine{0.67}}
+$
+&
+\verb|\matrixbrace[3]{\mbVLine{0.33}\mbVLine{0.67}}| \\ [3em]
+$  \matrixbrace[3]{\mbHLine{0.33}\mbHLine{0.67}}
+$
+&
+\verb|\matrixbrace[3]{\mbHLine{0.33}\mbHLine{0.67}}| \\ [3em]
+$  \matrixbrace[3]{\mbVLine{0.5}\mbHLine{0.5}}
+$
+&
+\verb|\matrixbrace[3]{\mbVLine{0.5}\mbHLine{0.5}}| 
+\end{tabular}
+\end{center}
+
+With aspect $= 2$:
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3][2]{\mbVLine{0.5}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbVLine{0.5}}| \\ [5em]
+$  \matrixbrace[3][2]{\mbHLine{1.0}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbHLine{1.0}}| \\ [5em]
+$  \matrixbrace[3][2]{\mbVLine{0.5}\mbHLine{1.0}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbVLine{0.5}\mbHLine{1.0}}|
+\end{tabular}
+\end{center}
+
+Combined with fills (block partitioning):
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{
+    \mbFill[blue!15]{0}{0.5}{0.5}{1}
+    \mbFill[green!15]{0.5}{0}{1}{0.5}
+    \mbVLine{0.5}
+    \mbHLine{0.5}
+    \mbLabel{0.25}{0.75}{A}
+    \mbLabel{0.75}{0.25}{D}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[blue!15]{0}{0.5}{0.5}{1}| \\
+\verb|  \mbFill[green!15]{0.5}{0}{1}{0.5}| \\
+\verb|  \mbVLine{0.5}\mbHLine{0.5}| \\
+\verb|  \mbLabel{0.25}{0.75}{A}| \\
+\verb|  \mbLabel{0.75}{0.25}{D}| \\
+\verb|}|
+\end{tabular} \\ [5em]
+$  \matrixbrace[3][2]{
+    \mbFill[gray!15]{0}{0}{0.75}{2}
+    \mbVLine{0.75}
+    \mbLabel{0.375}{1}{A}
+    \mbLabel{0.875}{1}{b}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3][2]{| \\
+\verb|  \mbFill[gray!15]{0}{0}{0.75}{2}| \\
+\verb|  \mbVLine{0.75}| \\
+\verb|  \mbLabel{0.375}{1}{A}| \\
+\verb|  \mbLabel{0.875}{1}{b}| \\
+\verb|}|
+\end{tabular}
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Label commands}
+% ===================================================================
+
+\subsection{\texttt{\textbackslash mbLabel\{x\}\{y\}\{text\}} — math mode}
+
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbLabel{0.2}{0.5}{A}}
+$
+&
+\verb|\matrixbrace[3]{\mbLabel{0.2}{0.5}{A}}| \\ [2em]
+$  \matrixbrace[3]{\mbLabel[red!20]{0.5}{0.5}{Q^T}}
+$
+&
+\verb|\matrixbrace[3]{\mbLabel[red!20]{0.5}{0.5}{Q^T}}| \\ [2em]
+$  \matrixbrace[3]{\mbLabel{0.5}{0.5}{\Sigma}}
+$
+&
+\verb|\matrixbrace[3]{\mbLabel{0.5}{0.5}{\Sigma}}| \\ [2em]
+$  \matrixbrace[3]{\mbDiagBand\mbLabel{0.25}{0.2}{T_m}}
+$
+&
+\verb|\matrixbrace[3]{\mbDiagBand\mbLabel{0.25}{0.2}{T_m}}| \\ [2em]
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbLabelCenter\{text\}} — always centered}
+
+Automatically placed at $(0.5,\,H/2)$ regardless of aspect ratio:
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3][1]{\mbLabelCenter{Q}}
+$
+&
+\verb|\matrixbrace[3][1]{\mbLabelCenter{Q}}| \\ [2em]
+$  \matrixbrace[3][2]{\mbLabelCenter{Q}}
+$
+&
+\verb|\matrixbrace[3][2]{\mbLabelCenter{Q}}| \\ [4em]
+$  \matrixbrace[3][3]{\mbLabelCenter{Q}}
+$
+&
+\verb|\matrixbrace[3][3]{\mbLabelCenter{Q}}| \\ [6em]
+$  \matrixbrace[3][0.5]{\mbLabelCenter{Q}}
+$
+&
+\verb|\matrixbrace[3][0.5]{\mbLabelCenter{Q}}|
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbLabelRaw\{x\}\{y\}\{text\}} — raw text}
+
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbLabelRaw{0.5}{0.5}{dense}}
+$
+&
+\verb|\matrixbrace[3]{\mbLabelRaw{0.5}{0.5}{dense}}| \\ [2em]
+$  \matrixbrace[3]{\mbLabelRaw{0.5}{0.5}{$\approx 0$}}
+$
+&
+\verb|\matrixbrace[3]{\mbLabelRaw{0.5}{0.5}{$\approx 0$}}| \\ [2em]
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Spike commands}
+% ===================================================================
+
+\verb|\mbSpike{x}{y}{dir}| draws an L-shaped corner at $(x,y)$.
+The four directions connect to different pairs of edges:
+
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbSpike{0.5}{0.5}{tl}}
+$
+&
+\verb|\matrixbrace[3]{\mbSpike{0.5}{0.5}{tl}}| \\ [3em]
+$  \matrixbrace[3]{\mbSpike{0.5}{0.5}{tr}}
+$
+&
+\verb|\matrixbrace[3]{\mbSpike{0.5}{0.5}{tr}}| \\ [3em]
+$  \matrixbrace[3]{\mbSpike{0.5}{0.5}{bl}}
+$
+&
+\verb|\matrixbrace[3]{\mbSpike{0.5}{0.5}{bl}}| \\ [3em]
+$  \matrixbrace[3]{\mbSpike{0.5}{0.5}{br}}
+$
+&
+\verb|\matrixbrace[3]{\mbSpike{0.5}{0.5}{br}}| \\ [3em]
+\end{tabular}
+\end{center}
+
+\texttt{tl} (top+left),\ \texttt{tr} (top+right),\ \texttt{bl} (bottom+left),\ \texttt{br} (bottom+right).
+
+With fills:
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{
+    \mbFill[green!20]{0}{0.5}{0.5}{1}
+    \mbSpike{0.5}{0.5}{tl}
+  }
+$
+&
+\verb|\matrixbrace[3]{\mbFill[green!20]{0}{0.5}{0.5}{1}\mbSpike{0.5}{0.5}{tl}}| \\ [2em]
+$  \matrixbrace[3]{
+    \mbFill[blue!15]{0.5}{0.5}{1}{1}
+    \mbSpike{0.5}{0.5}{tr}
+  }
+$
+&
+\verb|\matrixbrace[3]{\mbFill[blue!15]{0.5}{0.5}{1}{1}\mbSpike{0.5}{0.5}{tr}}| \\ [2em]
+$  \matrixbrace[3]{
+    \mbFill[red!15]{0}{0}{0.5}{0.5}
+    \mbSpike{0.5}{0.5}{bl}
+  }
+$
+&
+\verb|\matrixbrace[3]{\mbFill[red!15]{0}{0}{0.5}{0.5}\mbSpike{0.5}{0.5}{bl}}| \\ [2em]
+$  \matrixbrace[3]{
+    \mbFill[orange!20]{0.5}{0}{1}{0.5}
+    \mbSpike{0.5}{0.5}{br}
+  }
+$
+&
+\verb|\matrixbrace[3]{\mbFill[orange!20]{0.5}{0}{1}{0.5}\mbSpike{0.5}{0.5}{br}}| \\ [2em]
+\end{tabular}
+\end{center}
+
+With aspect $= 2$, corner at mid-height $(0.5, 1)$:
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3][2]{
+    \mbFill[green!20]{0}{1}{0.5}{2}
+    \mbSpike{0.5}{1}{tl}
+  }
+$
+&
+\verb|\matrixbrace[3][2]{\mbFill[green!20]{0}{1}{0.5}{2}\mbSpike{0.5}{1}{tl}}| \\ [5em]
+$  \matrixbrace[3][2]{
+    \mbFill[blue!15]{0.5}{1}{1}{2}
+    \mbSpike{0.5}{1}{tr}
+  }
+$
+&
+\verb|\matrixbrace[3][2]{\mbFill[blue!15]{0.5}{1}{1}{2}\mbSpike{0.5}{1}{tr}}| \\ [5em]
+$  \matrixbrace[3][2]{
+    \mbFill[red!15]{0}{0}{0.5}{1}
+    \mbSpike{0.5}{1}{bl}
+  }
+$
+&
+\verb|\matrixbrace[3][2]{\mbFill[red!15]{0}{0}{0.5}{1}\mbSpike{0.5}{1}{bl}}|
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Clipped diagonal commands}
+% ===================================================================
+
+The \texttt{...From} variants force the diagonal band from $[x_1,y_1]$ to $[x_2,y_2]$.
+Always pair with \verb|\mbSpike| at the same corner.
+
+\subsection{\texttt{\textbackslash mbDiagFrom\{x1\}\{y1\}\{x2\}\{y2\}}}
+
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{
+    \mbFill[green!20]{0}{0.5}{0.5}{1}
+    \mbSpike{0.5}{0.5}{tl}
+    \mbDiagFrom{0.5}{0.5}{1}{0}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[green!20]{0}{0.5}{0.5}{1}| \\
+\verb|  \mbSpike{0.5}{0.5}{tl}| \\
+\verb|  \mbDiagFrom{0.5}{0.5}{1}{0}| \\
+\verb|}|
+\end{tabular}
+\\ [2em]
+$  \matrixbrace[3][2]{
+    \mbFill[green!20]{0}{1}{0.5}{2}
+    \mbSpike{0.5}{1}{tl}
+    \mbDiagFrom{0.5}{1}{1}{0}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3][2]{| \\
+\verb|  \mbFill[green!20]{0}{1}{0.5}{2}|\\
+\verb|  \mbSpike{0.5}{1}{tl}|\\ 
+\verb|  \mbDiagFrom{0.5}{1}{1}{0}|\\
+\verb|}|
+\end{tabular}
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbDiagBandFrom\{cx\}\{cy\}}}
+
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{
+    \mbFill[green!20]{0}{0.5}{0.5}{1}
+    \mbSpike{0.5}{0.5}{tl}
+    \mbDiagBandFrom{0.5}{0.5}{1}{0}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[green!20]{0}{0.5}{0.5}{1}|\\
+\verb|  \mbSpike{0.5}{0.5}{tl}| \\
+\verb|  \mbDiagBandFrom{0.5}{0.5}{1}{0}| \\
+\verb|}|
+\end{tabular} \\ [2em]
+$  \matrixbrace[3][2]{
+    \mbFill[green!20]{0}{1}{0.5}{2}
+    \mbSpike{0.5}{1}{tl}
+    \mbDiagBandFrom{0.5}{1}{1}{0}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3][2]{| \\
+\verb|  \mbFill[green!20]{0}{1}{0.5}{2}| \\
+\verb|  \mbSpike{0.5}{1}{tl}| \\
+\verb|  \mbDiagBandFrom{0.5}{1}{1}{0}| \\
+\verb|}|
+\end{tabular}
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{\textbackslash mbDiagBandNFrom\{n\}\{cx\}\{cy\}}}
+
+$n = 3,\ 5,\ 7$:
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{
+    \mbFill[green!20]{0}{0.5}{0.5}{1}
+    \mbSpike{0.5}{0.5}{tl}
+    \mbDiagBandNFrom{3}{0.5}{0.5}{1}{0}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[green!20]{0}{0.5}{0.5}{1}| \\
+\verb|  \mbSpike{0.5}{0.5}{tl}| \\
+\verb|  \mbDiagBandNFrom{3}{0.5}{0.5}{1}{0}| \\
+\verb|}|
+\end{tabular} \\ [4em]
+$  \matrixbrace[3]{
+    \mbFill[green!20]{0}{0.5}{0.5}{1}
+    \mbSpike{0.5}{0.5}{tl}
+    \mbDiagBandNFrom{5}{0.5}{0.5}{1}{0}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[green!20]{0}{0.5}{0.5}{1}| \\
+\verb|  \mbSpike{0.5}{0.5}{tl}| \\
+\verb|  \mbDiagBandNFrom{5}{0.5}{0.5}{1}{0}| \\
+\verb|}|
+\end{tabular}
+\\ [4em]
+$  \matrixbrace[3]{
+    \mbFill[green!20]{0}{0.5}{0.5}{1}
+    \mbSpike{0.5}{0.5}{tl}
+    \mbDiagBandNFrom{7}{0.5}{0.5}{1}{0}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[green!20]{0}{0.5}{0.5}{1}| \\
+\verb|  \mbSpike{0.5}{0.5}{tl}|\\ 
+\verb|  \mbDiagBandNFrom{7}{0.5}{0.5}{1}{0}| \\
+\verb|}|
+\end{tabular}
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Realistic equations}
+% ===================================================================
+
+\subsection{QR decomposition: $A = QR$}
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3][2]{\mbLabelCenter{A}}
+  \quad=\quad
+  \matrixbrace[3][2]{\mbLabelCenter{Q}}
+  \,
+  \matrixbrace[3]{\mbLabelCenter{R}}
+$
+&
+\begin{tabular}[t]{@{}l@{}}
+\verb|\matrixbrace[3][2]{\mbLabelCenter{A}} = | \\
+\verb|\matrixbrace[3][2]{\mbLabelCenter{Q}}| \\
+\verb|\matrixbrace[3]{\mbLabelCenter{R}}|
+\end{tabular} \\
+\end{tabular}
+\end{center}
+
+\subsection{Bidiagonalization: $A = U B V^T$}
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbLabelCenter{A}}
+  \quad=\quad
+  \matrixbrace[3]{\mbLabelCenter{U}}
+  \,
+  \matrixbrace[3]{\mbBidiagUpper}
+  \,
+  \matrixbrace[3]{\mbLabelCenter{V^T}}
+$
+&
+\begin{tabular}[t]{@{}l@{}}
+\verb|\matrixbrace[3]{\mbLabelCenter{A}} = | \\
+\verb|\matrixbrace[3]{\mbLabelCenter{U}}| \\
+\verb|\matrixbrace[3]{\mbBidiagUpper}| \\
+\verb|\matrixbrace[3]{\mbLabelCenter{V^T}}|
+\end{tabular} \\
+\end{tabular}
+\end{center}
+
+\subsection{Similarity: $Q^T T_m Q = \widetilde{T}_m$}
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbLabelCenter{Q^T}}
+  \,
+  \matrixbrace[3]{\mbDiagBand\mbLabel{0.25}{0.15}{T_m}}
+  \,
+  \matrixbrace[3]{\mbLabelCenter{Q}}
+  \quad=\quad
+  \matrixbrace[3]{
+    \mbFill[green!25]{0}{0.5}{0.5}{1}
+    \mbSpike{0.5}{0.5}{tl}
+    \mbDiagBandFrom{0.5}{0.5}{1}{0}
+    \mbLabel{0.3}{0.12}{\widetilde{T}_m}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{\mbLabelCenter{Q^T}}| \\
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbDiagBand\mbLabel{0.25}{0.15}{T_m}| \\
+\verb|}| \\
+\verb|\matrixbrace[3]{\mbLabelCenter{Q}} =| \\
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[green!25]{0}{0.5}{0.5}{1}| \\
+\verb|  \mbSpike{0.5}{0.5}{tl}| \\
+\verb|  \mbDiagBandFrom{0.5}{0.5}{1}{0}| \\
+\verb|  \mbLabel{0.3}{0.12}{\widetilde{T}_m}| \\
+\verb|}|
+\end{tabular}
+\end{tabular}
+\end{center}
+
+\subsection{Hessenberg reduction: $Q^T A Q = H$}
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{\mbLabelCenter{Q^T}}
+  \,
+  \matrixbrace[3]{\mbLabelCenter{A}}
+  \,
+  \matrixbrace[3]{\mbLabelCenter{Q}}
+  \quad=\quad
+  \matrixbrace[3]{\mbHessenberg\mbLabel{0.7}{0.55}{H}}
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{\mbLabelCenter{Q^T}}| \\
+\verb|\matrixbrace[3]{\mbLabelCenter{A}}| \\
+\verb|\matrixbrace[3]{\mbLabelCenter{Q}} =| \\
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbHessenberg\mbLabel{0.7}{0.55}{H}| \\
+\verb|}|
+\end{tabular} \\
+\end{tabular}
+\end{center}
+
+\subsection{Column-bordered decomposition: $A P_m = P_m T_m + f$}
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$ \matrixbrace[4]{\mbLabelCenter{A}}
+ \matrixbrace[2]{\mbLabelCenter{P_m}}
+  \quad=\quad
+  \matrixbrace[2]{\mbLabelCenter{P_m}}
+  \,
+  \matrixbrace[2]{\mbDiagBand\mbLabel{0.25}{0.15}{T_m}}
+  +
+  \matrixbrace[2]{
+    \mbFill[gray!15]{0}{0}{0.75}{1}
+    \mbVLine{0.75}
+    \mbLabel{0.875}{0.5}{f}
+  }
+$
+&
+\begin{tabular}[t]{@{}l@{}}
+\verb|\matrixbrace[4]{\mbLabelCenter{A}}| \\
+\verb|\matrixbrace[2]{\mbLabelCenter{P_m}} = | \\
+\verb|\matrixbrace[2]{\mbLabelCenter{P_m}}| \\
+\verb|\matrixbrace[2]{|\\ 
+\verb|  \mbDiagBand \mbLabel{0.25}{0.15}{T_m}| \\
+\verb|} + |  \\
+\verb|\matrixbrace[2]{| \\
+\verb|  \mbFill[gray!15]{0}{0}{0.75}{1}| \\
+\verb|  \mbVLine{0.75} \mbLabel{0.875}{0.5}{f}| \\
+\verb|}|
+\end{tabular}
+\end{tabular}
+\end{center}
+
+
+\subsection{Schur complement structure}
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[4]{
+    \mbFill[blue!10]{0}{0.5}{0.5}{1}
+    \mbFill[green!10]{0.5}{0}{1}{0.5}
+    \mbFill[gray!10]{0.5}{0.5}{1}{1}
+    \mbVLine{0.5}
+    \mbHLine{0.5}
+    \mbLabel{0.25}{0.75}{A}
+    \mbLabel{0.75}{0.75}{B}
+    \mbLabel{0.25}{0.25}{C}
+    \mbLabel{0.75}{0.25}{S}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[4]{| \\
+\verb|\mbFill[blue!10]{0}{0.5}{0.5}{1} \mbFill[green!10]{0.5}{0}{1}{0.5}| \\
+\verb|\mbFill[gray!10]{0.5}{0.5}{1}{1}| \\ 
+\verb|\mbVLine{0.5} \mbHLine{0.5}| \\
+\verb|\mbLabel{0.25}{0.75}{A} \mbLabel{0.75}{0.75}{B}| \\
+\verb|\mbLabel{0.25}{0.25}{C} \mbLabel{0.75}{0.25}{S}}|
+\end{tabular} \\
+\end{tabular}
+\end{center}
+
+\subsection{Bordered similarity:
+  $\overline{Q}_k^T D_{k+1} \overline{Q}_k = \overline{T}_{k+1}$}
+\begin{center}
+\begin{tabular}{l@{\qquad}l}
+$  \matrixbrace[3]{
+    \mbFill[magenta!10]{0}{0.15}{0.85}{1}
+    \mbLabel{0.5}{0.5}{\overline{Q}_{k}^T}
+    \mbLabel{0.93}{0.08}{1}
+  }
+  \,
+  \matrixbrace[3]{
+    \mbDiag
+    \draw[thick] (0,0) -- (1,0) -- (1,\mbH);
+    \mbLabel{0.25}{0.45}{D_{k+1}}
+  }
+  \,
+  \matrixbrace[3]{
+    \mbFill[magenta!10]{0}{0.15}{0.85}{1}
+    \mbLabel{0.5}{0.5}{\overline{Q}_{k}}
+    \mbLabel{0.93}{0.08}{1}
+  }
+  \quad=\quad
+  \matrixbrace[3]{
+    \mbDiagBand
+    \mbLabel{0.25}{0.15}{\overline{T}_{k+1}}
+  }
+$
+&
+\begin{tabular}[c]{@{}l@{}}
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[magenta!10]{0}{0.15}{0.85}{1}|\\
+\verb|  \mbLabel{0.5}{0.5}{\overline{Q}_{k}^T}| \\
+\verb|  \mbLabel{0.93}{0.08}{1}| \\
+\verb|}| \\
+\verb|\matrixbrace[3]{|\\
+\verb|  \mbDiag| \\
+\verb|  \draw[thick] (0,0) -- (1,0) -- (1,\mbH);|\\
+\verb|  \mbLabel{0.25}{0.45}{D_{k+1}}| \\
+\verb|}| \\
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbFill[magenta!10]{0}{0.15}{0.85}{1}| \\
+\verb|  \mbLabel{0.5}{0.5}{\overline{Q}_{k}}| \\
+\verb|  \mbLabel{0.93}{0.08}{1}| \\
+\verb|} = | \\
+\verb|\matrixbrace[3]{| \\
+\verb|  \mbDiagBand| \\
+\verb|  \mbLabel{0.25}{0.15}{\overline{T}_{k+1}}| \\
+\verb|}|
+\end{tabular} \\
+\end{tabular}
+\end{center}
+
+% ===================================================================
+\section{Command reference}
+% ===================================================================
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\verb|\matrixbrace[s][a]{c}|
+  & Main command. \texttt{s} = scale (def.\ 1), \texttt{a} = aspect (def.\ 1 = square). \\
+\midrule
+\verb|\mbDiag|
+  & Anti-diagonal $(0,H)\to(1,0)$. \\
+\verb|\mbDiagBand|
+  & Tridiagonal band, spacing $d=0.1$. \\
+\verb|\mbDiagBandN{n}|
+  & $n$-diagonal band ($n$ odd), fixed step $0.1$. \\
+\verb|\mbBidiagUpper|
+  & Main diagonal + super-diagonal ($d=0.1$). \\
+\verb|\mbBidiagLower|
+  & Main diagonal + sub-diagonal ($d=0.1$). \\
+\verb|\mbHessenberg|
+  & Upper-triangular outline + sub-diagonal. \\
+\verb|\mbHessenberg[color]|
+  & Same with filled interior. \\
+\midrule
+\verb|\mbDiagFrom{x1}{y1}{x2}{y2}|
+  & Main diagonal, from $(x_1,y_1)$ to $(x_2,y_2)$ \\
+\verb|\mbDiagBandFrom{x1}{y1}{x2}{y2}|
+  & Tridiagonal band, clipped. \\
+\verb|\mbDiagBandNFrom{n}{x1}{y1}{x2}{y2}|
+  & $n$-diagonal band, clipped. \\
+\midrule
+\verb|\mbFill[col]{x0}{y0}{x1}{y1}|
+  & Filled rectangle. Default color \texttt{gray!20}. \\
+\verb|\mbVLine{x}|
+  & Vertical line, full height $0$ to $H$. \\
+\verb|\mbHLine{y}|
+  & Horizontal line, full width. \\
+\midrule
+\verb|\mbLabel{x}{y}{text}|
+  & Math-mode label at $(x,y)$. \\
+\verb|\mbLabel[color]{x}{y}{text}|
+  & Same with filled node label\\
+\verb|\mbLabelRaw{x}{y}{text}|
+  & Raw-text label at $(x,y)$. \\
+\verb|\mbLabelCenter{text}|
+  & Math label at center $(0.5,\,H/2)$, any aspect. \\
+\midrule
+\verb|\mbSpike{x}{y}{dir}|
+  & L-corner; \texttt{dir} $\in$ \{\texttt{tl, tr, bl, br}\}. \\
+\verb|\mbBlank|
+  & Empty content (brackets only). \\
+\verb|\mbH|
+  & Expands to current aspect value inside content. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

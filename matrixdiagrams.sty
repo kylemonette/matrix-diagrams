@@ -1,0 +1,260 @@
+% matrixbrace.sty
+% A LaTeX package for drawing schematic matrix diagrams with bracket notation in TikZ.
+%
+% USAGE OVERVIEW
+% --------------
+% Diagrams use normalized coordinates: x in [0,1], y in [0,aspect].
+% For square matrices aspect=1, so coordinates are in [0,1]x[0,1].
+% For a matrix twice as tall as wide, aspect=2 and y runs from 0 to 2.
+%
+% \matrixbrace[<scale>][<aspect>]{<tikz content>}
+%   scale  -- overall size multiplier (default 1)
+%   aspect -- height/width ratio (default 1 = square)
+%   content draws inside [0,1] x [0,aspect].
+%
+% All built-in commands adapt automatically. Use \mbH inside content
+% to refer to the top edge (= aspect value).
+%
+% COORDINATE SYSTEM (aspect=1)         TALL MATRIX (aspect=2)
+%   (0,1) -- (1,1)                       (0,2) -- (1,2)
+%     |          |                          |          |
+%   (0,0) -- (1,0)                       (0,0) -- (1,0)
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{matrixdiagrams}[2025/01/01 v2.1 Matrix bracket diagrams]
+
+\RequirePackage{tikz}
+\RequirePackage{xparse}
+\RequirePackage{calc}
+
+\usetikzlibrary{arrows.meta, bending, matrix, positioning, calc, arrows}
+
+% -----------------------------------------------------------------------
+% Internal dimensions
+% -----------------------------------------------------------------------
+\newdimen\mb@bracewidth
+\newdimen\mb@innersep
+\mb@bracewidth=3pt
+\mb@innersep=2pt
+
+% \mb@H: current aspect ratio = y-coordinate of top edge. Default 1.
+\def\mb@H{1}
+% \mbH: user-facing alias usable inside content arguments
+\def\mbH{\mb@H}
+
+% -----------------------------------------------------------------------
+% Core drawing macro: \mb@draw@box{scale}{aspect}{content}
+% -----------------------------------------------------------------------
+\newcommand{\mb@draw@box}[3]{%
+  \def\mb@H{#2}%
+  \vcenter{\hbox{%
+    \tikz[baseline={(MBNODO.base)}]{%
+      \node[inner sep=\mb@innersep](MBNODO){%
+        \tikz[baseline={($(MBcenter)-(0.25em,0.25em)$)},
+              x={#1*0.5cm}, y={#1*0.5cm}]{%
+          \coordinate (MBcenter) at (0.5,{#2*0.5});
+          \draw[draw=none] (0,0) rectangle (1,#2);
+          #3
+        }%
+      };
+      \draw[thick]
+        (MBNODO.north west)+(\mb@bracewidth,0)
+        -- (MBNODO.north west)
+        -- (MBNODO.south west)
+        -- ($(MBNODO.south west)+(\mb@bracewidth,0)$);
+      \draw[thick]
+        (MBNODO.north east)+(-\mb@bracewidth,0)
+        -- (MBNODO.north east)
+        -- (MBNODO.south east)
+        -- ($(MBNODO.south east)+(-\mb@bracewidth,0)$);
+    }%
+  }}%
+}
+
+% -----------------------------------------------------------------------
+% \matrixbrace[scale][aspect]{content}
+% -----------------------------------------------------------------------
+\NewDocumentCommand{\matrixbrace}{O{1} O{1} m}{%
+  \mb@draw@box{#1}{#2}{#3}%
+}
+
+% -----------------------------------------------------------------------
+% Content commands — all use \mb@H for the top edge
+% -----------------------------------------------------------------------
+
+% \mbDiag — anti-diagonal (top-left to bottom-right)
+\newcommand{\mbDiag}{%
+  \draw[thick] (0,\mb@H) -- (1,0);%
+}
+\let\mbIdentity\mbDiag
+
+% \mbDiagBand — tridiagonal band; offset d=0.1 in x, d*H in y
+\newcommand{\mbDiagBand}{%
+  \pgfmathparse{0.1*\mb@H}\edef\mbdH{\pgfmathresult}%
+  \draw[thick] (0,\mb@H)         -- (1,0);%
+  \draw[thick] (0,{\mb@H-\mbdH}) -- (0.9,0);%
+  \draw[thick] (0.1,\mb@H)       -- (1,\mbdH);%
+}
+
+% \mbDiagBandN{n} — n-diagonal band (n odd), fixed step 0.1 between diagonals.
+% n=1 draws only the main diagonal. Max useful n is 9.
+\newcommand{\mbDiagBandN}[1]{%
+  \pgfmathtruncatemacro{\mbhalf}{int((#1-1)/2)}%
+  \draw[thick] (0,\mb@H) -- (1,0);%
+  \ifnum\mbhalf>0
+    \foreach \mbk in {1,...,\mbhalf}{%
+      \pgfmathparse{\mbk*0.1}\edef\mbd{\pgfmathresult}%
+      \pgfmathparse{1-\mbk*0.1}\edef\mboneminusd{\pgfmathresult}%
+      \pgfmathparse{\mbk*0.1*\mb@H}\edef\mbdH{\pgfmathresult}%
+      \pgfmathparse{(1-\mbk*0.1)*\mb@H}\edef\mboneminusdH{\pgfmathresult}%
+      \draw[thick] (0,\mboneminusdH) -- (\mboneminusd,0);%  sub
+      \draw[thick] (\mbd,\mb@H)      -- (1,\mbdH);%          super
+    }%
+  \fi
+}
+
+% \mbFill[color]{x0}{y0}{x1}{y1}
+\newcommand{\mbFill}[5][gray!20]{%
+  \fill[#1] (#2,#3) rectangle (#4,#5);%
+}
+
+% \mbLabel[fill]{x}{y}{text} — math-mode label, optional node fill color
+\newcommand{\mbLabel}[4][none]{%
+  \node[fill=#1] at (#2,#3) {$#4$};%
+}
+
+% \mbLabelRaw[fill]{x}{y}{text} — raw text label, optional node fill color
+\newcommand{\mbLabelRaw}[4][none]{%
+  \node[fill=#1] at (#2,#3) {#4};%
+}
+
+% \mbLabelCenter{text} — math label at the center (x=0.5, y=H/2)
+\newcommand{\mbLabelCenter}[1]{%
+  \pgfmathparse{0.5*\mb@H}\edef\mbmidH{\pgfmathresult}%
+  \node at (0.5,\mbmidH) {$#1$};%
+}
+
+% \mbVLine{x} — full-height vertical line (0 to H)
+\newcommand{\mbVLine}[1]{%
+  \draw[thick] (#1,0) -- (#1,\mb@H);%
+}
+
+% \mbHLine{y} — full-width horizontal line (0 to 1)
+\newcommand{\mbHLine}[1]{%
+  \draw[thick] (0,#1) -- (1,#1);%
+}
+
+% -----------------------------------------------------------------------
+% Clipped diagonal commands
+% Draw diagonal bands clipped to the rectangle (x1,y1)--(x2,y2),
+% where (x1,y1) is the bottom-left corner and (x2,y2) is the top-right.
+%
+% \mbDiagFrom{x1}{y1}{x2}{y2}
+% \mbDiagBandFrom{x1}{y1}{x2}{y2}
+% \mbDiagBandNFrom{n}{x1}{y1}{x2}{y2}
+%   n=1 draws only the main diagonal (no off-diagonals).
+%
+% Typical spike usage — clip to the region outside the block:
+%   \mbSpike{0.5}{0.5}{tl}
+%   \mbDiagBandFrom{0.5}{0}{1}{0.5}    % bottom-left=(0.5,0), top-right=(1,0.5)
+% -----------------------------------------------------------------------
+
+% \mbDiagFrom{x1}{y1}{x2}{y2}
+\newcommand{\mbDiagFrom}[4]{%
+  \begin{scope}%
+    \clip (#1,#2) rectangle (#3,#4);%
+    \draw[thick] (0,\mb@H) -- (1,0);%
+  \end{scope}%
+}
+
+% \mbDiagBandFrom{x1}{y1}{x2}{y2}
+\newcommand{\mbDiagBandFrom}[4]{%
+  \begin{scope}%
+    \clip (#1,#2) rectangle (#3,#4);%
+    \pgfmathparse{0.1*\mb@H}\edef\mbdH{\pgfmathresult}%
+    \draw[thick] (0,\mb@H)         -- (1,0);%
+    \draw[thick] (0,{\mb@H-\mbdH}) -- (0.9,0);%
+    \draw[thick] (0.1,\mb@H)       -- (1,\mbdH);%
+  \end{scope}%
+}
+
+% \mbDiagBandNFrom{n}{x1}{y1}{x2}{y2}
+% n=1: main diagonal only. n=3: tridiagonal. Etc.
+\newcommand{\mbDiagBandNFrom}[5]{%
+  \begin{scope}%
+    \clip (#2,#3) rectangle (#4,#5);%
+    \pgfmathtruncatemacro{\mbhalf}{int((#1-1)/2)}%
+    \draw[thick] (0,\mb@H) -- (1,0);%
+    \ifnum\mbhalf>0
+      \foreach \mbk in {1,...,\mbhalf}{%
+        \pgfmathparse{\mbk*0.1}\edef\mbd{\pgfmathresult}%
+        \pgfmathparse{1-\mbk*0.1}\edef\mboneminusd{\pgfmathresult}%
+        \pgfmathparse{\mbk*0.1*\mb@H}\edef\mbdH{\pgfmathresult}%
+        \pgfmathparse{(1-\mbk*0.1)*\mb@H}\edef\mboneminusdH{\pgfmathresult}%
+        \draw[thick] (0,\mboneminusdH) -- (\mboneminusd,0);%
+        \draw[thick] (\mbd,\mb@H)      -- (1,\mbdH);%
+      }%
+    \fi
+  \end{scope}%
+}
+
+% -----------------------------------------------------------------------
+% Spike commands — L-shaped block boundary corners
+%   tl: corner at (x,y), arms to top (y=H) and left (x=0)
+%   tr: corner at (x,y), arms to top (y=H) and right (x=1)
+%   bl: corner at (x,y), arms to bottom (y=0) and left (x=0)
+%   br: corner at (x,y), arms to bottom (y=0) and right (x=1)
+% -----------------------------------------------------------------------
+\def\mb@tl{tl}\def\mb@tr{tr}\def\mb@bl{bl}\def\mb@br{br}
+
+\newcommand{\mbSpike}[3]{%
+  \def\mb@spikedir{#3}%
+  \ifx\mb@spikedir\mb@tl \draw[thick] (#1,\mb@H) -- (#1,#2) -- (0,#2);%
+  \else\ifx\mb@spikedir\mb@tr \draw[thick] (#1,\mb@H) -- (#1,#2) -- (1,#2);%
+  \else\ifx\mb@spikedir\mb@bl \draw[thick] (#1,0) -- (#1,#2) -- (0,#2);%
+  \else\ifx\mb@spikedir\mb@br \draw[thick] (#1,0) -- (#1,#2) -- (1,#2);%
+  \fi\fi\fi\fi
+}
+
+% -----------------------------------------------------------------------
+% Bidiagonal commands
+%   upper: main diagonal + one super-diagonal (d=0.1)
+%   lower: main diagonal + one sub-diagonal   (d=0.1)
+% -----------------------------------------------------------------------
+
+% \mbBidiagUpper — main diagonal + super-diagonal
+\newcommand{\mbBidiagUpper}{%
+  \pgfmathparse{0.1*\mb@H}\edef\mbdH{\pgfmathresult}%
+  \draw[thick] (0,\mb@H)   -- (1,0);%
+  \draw[thick] (0.1,\mb@H) -- (1,\mbdH);%
+}
+
+% \mbBidiagLower — main diagonal + sub-diagonal
+\newcommand{\mbBidiagLower}{%
+  \pgfmathparse{0.1*\mb@H}\edef\mbdH{\pgfmathresult}%
+  \draw[thick] (0,\mb@H)         -- (1,0);%
+  \draw[thick] (0,{\mb@H-\mbdH}) -- (0.9,0);%
+}
+
+% -----------------------------------------------------------------------
+% Hessenberg command
+% \mbHessenberg[fillcolor]
+%   No argument: outline only (default).
+%   With color argument: filled triangle + outline.
+% -----------------------------------------------------------------------
+\newcommand{\mbHessenberg}[1][none]{%
+  \pgfmathparse{0.1*\mb@H}\edef\mbdH{\pgfmathresult}%
+  \def\mb@hessarg{#1}\def\mb@hessnone{none}%
+  \ifx\mb@hessarg\mb@hessnone
+    \draw[thick] (0,\mb@H) -- (1,\mb@H) -- (1,0) -- (0,\mb@H);%
+  \else
+    \fill[#1] (0,\mb@H) -- (1,\mb@H) -- (1,0) -- cycle;%
+    \draw[thick] (0,\mb@H) -- (1,\mb@H) -- (1,0) -- (0,\mb@H);%
+  \fi
+  \draw[thick] (0,{\mb@H-\mbdH}) -- (0.9,0);%
+}
+
+% \mbBlank — empty content (brackets only)
+\newcommand{\mbBlank}{}
+
+\endinput
