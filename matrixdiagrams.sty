@@ -1,6 +1,16 @@
 % matrixdiagrams.sty
 % A LaTeX package for drawing schematic matrix diagrams with bracket notation in TikZ.
 %
+% SOURCE CODE:
+% https://github.com/kylemonette/matrix-diagrams
+%
+% AUTHOR:
+% Kyle Monette - https://kylemonette.github.io
+% 
+% LAST MODIFIED:
+% August 14, 2026
+%
+%
 % USAGE OVERVIEW
 % --------------
 % \matrixdiagram[<scale>][<aspect>]{<tikz content>}
@@ -17,7 +27,7 @@
 %
 % COORDINATE SYSTEM (aspect=1)         TALL MATRIX (aspect=2)
 %   (0,1) -- (1,1)                       (0,2) -- (1,2)
-%     |          |                          |          |
+%     |        |                           |        |
 %   (0,0) -- (1,0)                       (0,0) -- (1,0)
 
 \NeedsTeXFormat{LaTeX2e}
@@ -32,10 +42,10 @@
 % -----------------------------------------------------------------------
 % Internal dimensions
 % -----------------------------------------------------------------------
-\newdimen\md@bracewidth
-\newdimen\md@innersep
-\newdimen\md@baseunit
-\newdimen\md@hsep
+\newdimen\md@bracewidth % length of the horizontal tick at each bracket corner
+\newdimen\md@innersep   % gap between the content and the brackets
+\newdimen\md@baseunit   % size of one coordinate unit at scale=1
+\newdimen\md@hsep       % margin added left and right of every \matrixdiagram
 \md@bracewidth=3pt
 \md@innersep=2pt
 \md@baseunit=0.5cm

@@ -1,933 +1,83 @@
-\documentclass[11pt]{article}
+% matrixdiagrams.tex
+% A LaTeX package for drawing schematic matrix diagrams in TikZ.
+% 
+% SOURCE CODE:
+% https://github.com/kylemonette/matrix-diagrams
+%
+% AUTHOR:
+% Kyle Monette - https://kylemonette.github.io
+% 
+% LAST MODIFIED:
+% August 14, 2026
+%
+%
+\documentclass[11pt,english]{article}
+\usepackage{babel}
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{geometry}
 \geometry{margin=0.8in}
 \usepackage{matrixdiagrams}
-\usepackage{verbatim}
-\usepackage{listings}
+\usepackage{showexpl}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  showstringspaces=false,
+explpreset={pos=b,numbers=none,rframe={},width=\linewidth}
+}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage{tabularx}
 
 \title{\texttt{matrixdiagrams.sty}}
-\author{Kyle Monette}
+\author{Kyle Monette (\href{https://kylemonette.github.io}{kylemonette.github.io})}
 \date{\today}
 
 \begin{document}
 \maketitle
-% \tableofcontents
-% \bigskip
 
-% ===================================================================
-\section{Main command}
-
-\noindent \texttt{\textbackslash matrixdiagram[scale][aspect]\{content\}}
-% ===================================================================
-
-\subsection{Scale (aspect = 1)}
-
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{l r l r}
-$
-  \matrixdiagram[1]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[1]{\mdBlank}|
-&
-$
-  \matrixdiagram[2]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[2]{\mdBlank}| \\ [2em]
-$
-  \matrixdiagram[3]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[3]{\mdBlank}|
-&
-$
-  \matrixdiagram[4]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[4]{\mdBlank}| \\ [2em]
-$
-  \matrixdiagram[5]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[5]{\mdBlank}|
-\end{tabular}
-\end{center}
-
-\subsection{Aspect ratio (scale = 3)}
-
-% Aspect $= 0.5,\ 1,\ 1.5,\ 2,\ 3$:
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{lr lr}
-$
-  \matrixdiagram[3][0.5]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[3][0.5]{\mdBlank}|
-&
-$
-  \matrixdiagram[3][1]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[3][1]{\mdBlank}| \\ [2em]
-$
-  \matrixdiagram[3][1.5]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[3][1.5]{\mdBlank}|
-&
-$
-  \matrixdiagram[3][2]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdBlank}| \\ [2em]
-$
-  \matrixdiagram[3][3]{\mdBlank}
-$
-&
-\verb|\matrixdiagram[3][3]{\mdBlank}|
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Diagonal commands}
-% ===================================================================
-
-\subsection{\texttt{\textbackslash mdDiag} — main diagonal}
-
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{lr}
-$
-  \matrixdiagram[3]{\mdDiag}
-  \qquad
-  \matrixdiagram[3][2]{\mdDiag}
-$
-&
-\qquad
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{\mdDiag}| \\
-\verb|\matrixdiagram[3][2]{\mdDiag}|
-\end{tabular} \\
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdDiagBand} — tridiagonal band}
-
-Three parallel anti-diagonals with spacing $d = 0.1$.
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{lr}
-$
-  \matrixdiagram[3]{\mdDiagBand}
-  \qquad
-  \matrixdiagram[3][2]{\mdDiagBand}
-$
-&
-\qquad
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{\mdDiagBand}| \\
-\verb|\matrixdiagram[3][2]{\mdDiagBand}|
-\end{tabular} \\
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdDiagBandN\{n\}} — variable band width}
-
-$n = 3, 5, 7, 9$ (spacing fixed at $d=0.1$ per diagonal):
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{l@{\qquad}r}
-$
-  \matrixdiagram[3]{\mdDiagBandN{3}}
-$
-&
-\verb|\matrixdiagram[3]{\mdDiagBandN{3}}| \\ [2em]
-$
-  \matrixdiagram[3]{\mdDiagBandN{5}}
-$
-&
-\verb|\matrixdiagram[3]{\mdDiagBandN{5}}| \\ [2em]
-$
-  \matrixdiagram[3]{\mdDiagBandN{7}}
-$
-&
-\verb|\matrixdiagram[3]{\mdDiagBandN{7}}| \\ [2em]
-$
-  \matrixdiagram[3]{\mdDiagBandN{9}}
-$
-&
-\verb|\matrixdiagram[3]{\mdDiagBandN{9}}|
-\end{tabular}
-\end{center}
-
-Note: \verb|\mdDiagBandN{3}| is identical to \verb|\mdDiagBand|. With aspect $= 2$:
-
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{l@{\qquad}l}
-$
-  \matrixdiagram[3][2]{\mdDiagBandN{3}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdDiagBandN{3}}| \\ [4em]
-$
-  \matrixdiagram[3][2]{\mdDiagBandN{5}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdDiagBandN{5}}| \\ [4em]
-$
-  \matrixdiagram[3][2]{\mdDiagBandN{7}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdDiagBandN{7}}| 
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Bidiagonal commands}
-% ===================================================================
-
-\subsection{\texttt{\textbackslash mdBidiagUpper} — main + super-diagonal}
-
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{l@{\quad}l l@{\quad}l}
-$
-  \matrixdiagram[3]{\mdBidiagUpper}
-$
-&
-\verb|\matrixdiagram[3]{\mdBidiagUpper}|
-& 
-$
-  \matrixdiagram[3][2]{\mdBidiagUpper}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdBidiagUpper}|
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdBidiagLower} — main + sub-diagonal}
-
-\begin{center}
-% \begin{tabular}{@{}p{0.56\textwidth}p{0.40\textwidth}@{}}
-\begin{tabular}{l@{\quad}l l @{\quad} l}
-$
-  \matrixdiagram[3]{\mdBidiagLower}
-$
-&
-\verb|\matrixdiagram[3]{\mdBidiagLower}|
-&
-$
-  \matrixdiagram[3][2]{\mdBidiagLower}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdBidiagLower}|
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Hessenberg command}
-% ===================================================================
-
-\subsection{\texttt{\textbackslash mdHessenberg} — outline only (default)}
-
-Upper-triangular outline $(0,H)\to(1,H)\to(1,0)$ plus one sub-diagonal.
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdHessenberg}
-$
-&
-\verb|\matrixdiagram[3]{\mdHessenberg}| \\ [2em]
-$  \matrixdiagram[3][2]{\mdHessenberg}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdHessenberg}| \\ [2em]
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdHessenberg[color]} — with fill}
-
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdHessenberg[gray!15]}
-$
-&
-\verb|\matrixdiagram[3]{\mdHessenberg[gray!15]}| \\ [2em]
-$  \matrixdiagram[3]{\mdHessenberg[blue!15]}
-$
-&
-\verb|\matrixdiagram[3]{\mdHessenberg[blue!15]}| \\ [2em]
-$  \matrixdiagram[3]{\mdHessenberg[green!20]}
-$
-&
-\verb|\matrixdiagram[3]{\mdHessenberg[green!20]}| \\ [2em]
-$  \matrixdiagram[3]{\mdHessenberg[orange!20]}
-$
-&
-\verb|\matrixdiagram[3]{\mdHessenberg[orange!20]}| \\ [2em]
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Fill and line commands}
-% ===================================================================
-
-\subsection{\texttt{\textbackslash mdFill[color]\{x0\}\{y0\}\{x1\}\{y1\}}}
-
-Four quadrant fills; default color is \texttt{gray!20}:
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdFill[green!30]{0}{0.5}{0.5}{1}}
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[green!30]{0}{0.5}{0.5}{1}}| \\ [2em]
-$  \matrixdiagram[3]{\mdFill[blue!20]{0.5}{0.5}{1}{1}}
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[blue!20]{0.5}{0.5}{1}{1}}| \\ [2em]
-$  \matrixdiagram[3]{\mdFill[red!20]{0}{0}{0.5}{0.5}}
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[red!20]{0}{0}{0.5}{0.5}}| \\ [2em]
-$  \matrixdiagram[3]{\mdFill[orange!25]{0.5}{0}{1}{0.5}}
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[orange!25]{0.5}{0}{1}{0.5}}| \\ [2em]
-$  \matrixdiagram[3]{\mdFill{0}{0}{1}{1}}
-$
-&
-\verb|\matrixdiagram[3]{\mdFill{0}{0}{1}{1}}| \\ [2em]
-\end{tabular}
-\end{center}
-
-\medskip
-
-With aspect $= 2$ ($y$ is still a fraction of the height, in $[0,1]$):
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3][2]{\mdFill[green!25]{0}{0.5}{0.5}{1}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdFill[green!25]{0}{0.5}{0.5}{1}}| \\ [4em]
-$  \matrixdiagram[3][2]{\mdFill[blue!15]{0}{0}{1}{0.5}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdFill[blue!15]{0}{0}{1}{0.5}}| \\ [4em]
-$  \matrixdiagram[3][2]{\mdFill[gray!15]{0}{0}{0.75}{1}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdFill[gray!15]{0}{0}{0.75}{1}}|
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdVLine\{x\}} and \texttt{\textbackslash mdHLine\{y\}}}
-
-\verb|\mdVLine{x}| runs the full height at $x\in[0,1]$;
-\verb|\mdHLine{y}| runs the full width at fractional height $y\in[0,1]$.
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdVLine{0.5}}
-$
-&
-\verb|\matrixdiagram[3]{\mdVLine{0.5}}| \\ [3em]
-$  \matrixdiagram[3]{\mdHLine{0.5}}
-$
-&
-\verb|\matrixdiagram[3]{\mdHLine{0.5}}| \\ [3em]
-$  \matrixdiagram[3]{\mdVLine{0.33}\mdVLine{0.67}}
-$
-&
-\verb|\matrixdiagram[3]{\mdVLine{0.33}\mdVLine{0.67}}| \\ [3em]
-$  \matrixdiagram[3]{\mdHLine{0.33}\mdHLine{0.67}}
-$
-&
-\verb|\matrixdiagram[3]{\mdHLine{0.33}\mdHLine{0.67}}| \\ [3em]
-$  \matrixdiagram[3]{\mdVLine{0.5}\mdHLine{0.5}}
-$
-&
-\verb|\matrixdiagram[3]{\mdVLine{0.5}\mdHLine{0.5}}| 
-\end{tabular}
-\end{center}
-
-With aspect $= 2$:
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3][2]{\mdVLine{0.5}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdVLine{0.5}}| \\ [5em]
-$  \matrixdiagram[3][2]{\mdHLine{0.5}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdHLine{0.5}}| \\ [5em]
-$  \matrixdiagram[3][2]{\mdVLine{0.5}\mdHLine{0.5}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdVLine{0.5}\mdHLine{0.5}}|
-\end{tabular}
-\end{center}
-
-Combined with fills (block partitioning):
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{
-    \mdFill[blue!15]{0}{0.5}{0.5}{1}
-    \mdFill[green!15]{0.5}{0}{1}{0.5}
-    \mdVLine{0.5}
-    \mdHLine{0.5}
-    \mdLabel{0.25}{0.75}{A}
-    \mdLabel{0.75}{0.25}{D}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[blue!15]{0}{0.5}{0.5}{1}| \\
-\verb|  \mdFill[green!15]{0.5}{0}{1}{0.5}| \\
-\verb|  \mdVLine{0.5}\mdHLine{0.5}| \\
-\verb|  \mdLabel{0.25}{0.75}{A}| \\
-\verb|  \mdLabel{0.75}{0.25}{D}| \\
-\verb|}|
-\end{tabular} \\ [5em]
-$  \matrixdiagram[3][2]{
-    \mdFill[gray!15]{0}{0}{0.75}{1}
-    \mdVLine{0.75}
-    \mdLabel{0.375}{0.5}{A}
-    \mdLabel{0.875}{0.5}{b}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3][2]{| \\
-\verb|  \mdFill[gray!15]{0}{0}{0.75}{1}| \\
-\verb|  \mdVLine{0.75}| \\
-\verb|  \mdLabel{0.375}{0.5}{A}| \\
-\verb|  \mdLabel{0.875}{0.5}{b}| \\
-\verb|}|
-\end{tabular}
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Label commands}
-% ===================================================================
-
-\subsection{\texttt{\textbackslash mdLabel\{x\}\{y\}\{text\}} — math mode}
-
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdLabel{0.2}{0.5}{A}}
-$
-&
-\verb|\matrixdiagram[3]{\mdLabel{0.2}{0.5}{A}}| \\ [2em]
-$  \matrixdiagram[3]{\mdLabel[red!20]{0.5}{0.5}{Q^T}}
-$
-&
-\verb|\matrixdiagram[3]{\mdLabel[red!20]{0.5}{0.5}{Q^T}}| \\ [2em]
-$  \matrixdiagram[3]{\mdLabel{0.5}{0.5}{\Sigma}}
-$
-&
-\verb|\matrixdiagram[3]{\mdLabel{0.5}{0.5}{\Sigma}}| \\ [2em]
-$  \matrixdiagram[3]{\mdDiagBand\mdLabel{0.25}{0.2}{T_m}}
-$
-&
-\verb|\matrixdiagram[3]{\mdDiagBand\mdLabel{0.25}{0.2}{T_m}}| \\ [2em]
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdLabelCenter\{text\}} — always centered}
-
-Automatically placed at $(0.5,\,H/2)$ regardless of aspect ratio:
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3][1]{\mdLabelCenter{Q}}
-$
-&
-\verb|\matrixdiagram[3][1]{\mdLabelCenter{Q}}| \\ [2em]
-$  \matrixdiagram[3][2]{\mdLabelCenter{Q}}
-$
-&
-\verb|\matrixdiagram[3][2]{\mdLabelCenter{Q}}| \\ [4em]
-$  \matrixdiagram[3][3]{\mdLabelCenter{Q}}
-$
-&
-\verb|\matrixdiagram[3][3]{\mdLabelCenter{Q}}| \\ [6em]
-$  \matrixdiagram[3][0.5]{\mdLabelCenter{Q}}
-$
-&
-\verb|\matrixdiagram[3][0.5]{\mdLabelCenter{Q}}|
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdLabelRaw\{x\}\{y\}\{text\}} — raw text}
-
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdLabelRaw{0.5}{0.5}{dense}}
-$
-&
-\verb|\matrixdiagram[3]{\mdLabelRaw{0.5}{0.5}{dense}}| \\ [2em]
-$  \matrixdiagram[3]{\mdLabelRaw{0.5}{0.5}{$\approx 0$}}
-$
-&
-\verb|\matrixdiagram[3]{\mdLabelRaw{0.5}{0.5}{$\approx 0$}}| \\ [2em]
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Spike commands}
-% ===================================================================
-
-\verb|\mdSpike{x}{y}{dir}| draws an L-shaped corner at $(x,y)$.
-The four directions connect to different pairs of edges:
-
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdSpike{0.5}{0.5}{tl}}
-$
-&
-\verb|\matrixdiagram[3]{\mdSpike{0.5}{0.5}{tl}}| \\ [3em]
-$  \matrixdiagram[3]{\mdSpike{0.5}{0.5}{tr}}
-$
-&
-\verb|\matrixdiagram[3]{\mdSpike{0.5}{0.5}{tr}}| \\ [3em]
-$  \matrixdiagram[3]{\mdSpike{0.5}{0.5}{bl}}
-$
-&
-\verb|\matrixdiagram[3]{\mdSpike{0.5}{0.5}{bl}}| \\ [3em]
-$  \matrixdiagram[3]{\mdSpike{0.5}{0.5}{br}}
-$
-&
-\verb|\matrixdiagram[3]{\mdSpike{0.5}{0.5}{br}}| \\ [3em]
-\end{tabular}
-\end{center}
-
-\texttt{tl} (top+left),\ \texttt{tr} (top+right),\ \texttt{bl} (bottom+left),\ \texttt{br} (bottom+right).
-
-With fills:
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-  }
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[green!20]{0}{0.5}{0.5}{1}\mdSpike{0.5}{0.5}{tl}}| \\ [2em]
-$  \matrixdiagram[3]{
-    \mdFill[blue!15]{0.5}{0.5}{1}{1}
-    \mdSpike{0.5}{0.5}{tr}
-  }
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[blue!15]{0.5}{0.5}{1}{1}\mdSpike{0.5}{0.5}{tr}}| \\ [2em]
-$  \matrixdiagram[3]{
-    \mdFill[red!15]{0}{0}{0.5}{0.5}
-    \mdSpike{0.5}{0.5}{bl}
-  }
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[red!15]{0}{0}{0.5}{0.5}\mdSpike{0.5}{0.5}{bl}}| \\ [2em]
-$  \matrixdiagram[3]{
-    \mdFill[orange!20]{0.5}{0}{1}{0.5}
-    \mdSpike{0.5}{0.5}{br}
-  }
-$
-&
-\verb|\matrixdiagram[3]{\mdFill[orange!20]{0.5}{0}{1}{0.5}\mdSpike{0.5}{0.5}{br}}| \\ [2em]
-\end{tabular}
-\end{center}
-
-With aspect $= 2$, corner at mid-height $(0.5, 0.5)$:
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3][2]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-  }
-$
-&
-\verb|\matrixdiagram[3][2]{\mdFill[green!20]{0}{0.5}{0.5}{1}\mdSpike{0.5}{0.5}{tl}}| \\ [5em]
-$  \matrixdiagram[3][2]{
-    \mdFill[blue!15]{0.5}{0.5}{1}{1}
-    \mdSpike{0.5}{0.5}{tr}
-  }
-$
-&
-\verb|\matrixdiagram[3][2]{\mdFill[blue!15]{0.5}{0.5}{1}{1}\mdSpike{0.5}{0.5}{tr}}| \\ [5em]
-$  \matrixdiagram[3][2]{
-    \mdFill[red!15]{0}{0}{0.5}{0.5}
-    \mdSpike{0.5}{0.5}{bl}
-  }
-$
-&
-\verb|\matrixdiagram[3][2]{\mdFill[red!15]{0}{0}{0.5}{0.5}\mdSpike{0.5}{0.5}{bl}}|
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Clipped diagonal commands}
-% ===================================================================
-
-The \texttt{...From} variants force the diagonal band from $[x_1,y_1]$ to $[x_2,y_2]$.
-Always pair with \verb|\mdSpike| at the same corner.
-
-\subsection{\texttt{\textbackslash mdDiagFrom\{x1\}\{y1\}\{x2\}\{y2\}}}
-
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagFrom{0.5}{0.5}{1}{0}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}| \\
-\verb|  \mdSpike{0.5}{0.5}{tl}| \\
-\verb|  \mdDiagFrom{0.5}{0.5}{1}{0}| \\
-\verb|}|
-\end{tabular}
-\\ [2em]
-$  \matrixdiagram[3][2]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagFrom{0.5}{0.5}{1}{0}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3][2]{| \\
-\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}|\\
-\verb|  \mdSpike{0.5}{0.5}{tl}|\\
-\verb|  \mdDiagFrom{0.5}{0.5}{1}{0}|\\
-\verb|}|
-\end{tabular}
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdDiagBandFrom\{cx\}\{cy\}}}
-
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagBandFrom{0.5}{0.5}{1}{0}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}|\\
-\verb|  \mdSpike{0.5}{0.5}{tl}| \\
-\verb|  \mdDiagBandFrom{0.5}{0.5}{1}{0}| \\
-\verb|}|
-\end{tabular} \\ [2em]
-$  \matrixdiagram[3][2]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagBandFrom{0.5}{0.5}{1}{0}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3][2]{| \\
-\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}| \\
-\verb|  \mdSpike{0.5}{0.5}{tl}| \\
-\verb|  \mdDiagBandFrom{0.5}{0.5}{1}{0}| \\
-\verb|}|
-\end{tabular}
-\end{tabular}
-\end{center}
-
-\subsection{\texttt{\textbackslash mdDiagBandNFrom\{n\}\{cx\}\{cy\}}}
-
-$n = 3,\ 5,\ 7$:
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagBandNFrom{3}{0.5}{0.5}{1}{0}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}| \\
-\verb|  \mdSpike{0.5}{0.5}{tl}| \\
-\verb|  \mdDiagBandNFrom{3}{0.5}{0.5}{1}{0}| \\
-\verb|}|
-\end{tabular} \\ [4em]
-$  \matrixdiagram[3]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagBandNFrom{5}{0.5}{0.5}{1}{0}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}| \\
-\verb|  \mdSpike{0.5}{0.5}{tl}| \\
-\verb|  \mdDiagBandNFrom{5}{0.5}{0.5}{1}{0}| \\
-\verb|}|
-\end{tabular}
-\\ [4em]
-$  \matrixdiagram[3]{
-    \mdFill[green!20]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagBandNFrom{7}{0.5}{0.5}{1}{0}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[green!20]{0}{0.5}{0.5}{1}| \\
-\verb|  \mdSpike{0.5}{0.5}{tl}|\\ 
-\verb|  \mdDiagBandNFrom{7}{0.5}{0.5}{1}{0}| \\
-\verb|}|
-\end{tabular}
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Realistic equations}
-% ===================================================================
-
-\subsection{QR decomposition: $A = QR$}
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3][2]{\mdLabelCenter{A}}
-  \quad=\quad
-  \matrixdiagram[3][2]{\mdLabelCenter{Q}}
-  \matrixdiagram[3]{\mdLabelCenter{R}}
-$
-&
-\begin{tabular}[t]{@{}l@{}}
-\verb|\matrixdiagram[3][2]{\mdLabelCenter{A}} = | \\
-\verb|\matrixdiagram[3][2]{\mdLabelCenter{Q}}| \\
-\verb|\matrixdiagram[3]{\mdLabelCenter{R}}|
-\end{tabular} \\
-\end{tabular}
-\end{center}
-
-\subsection{Bidiagonalization: $A = U B V^T$}
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdLabelCenter{A}}
-  \quad=\quad
-  \matrixdiagram[3]{\mdLabelCenter{U}}
-  \matrixdiagram[3]{\mdBidiagUpper}
-  \matrixdiagram[3]{\mdLabelCenter{V^T}}
-$
-&
-\begin{tabular}[t]{@{}l@{}}
-\verb|\matrixdiagram[3]{\mdLabelCenter{A}} = | \\
-\verb|\matrixdiagram[3]{\mdLabelCenter{U}}| \\
-\verb|\matrixdiagram[3]{\mdBidiagUpper}| \\
-\verb|\matrixdiagram[3]{\mdLabelCenter{V^T}}|
-\end{tabular} \\
-\end{tabular}
-\end{center}
-
-\subsection{Similarity: $Q^T T_m Q = \widetilde{T}_m$}
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdLabelCenter{Q^T}}
-  \matrixdiagram[3]{\mdDiagBand\mdLabel{0.25}{0.15}{T_m}}
-  \matrixdiagram[3]{\mdLabelCenter{Q}}
-  \quad=\quad
-  \matrixdiagram[3]{
-    \mdFill[green!25]{0}{0.5}{0.5}{1}
-    \mdSpike{0.5}{0.5}{tl}
-    \mdDiagBandFrom{0.5}{0.5}{1}{0}
-    \mdLabel{0.3}{0.12}{\widetilde{T}_m}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{\mdLabelCenter{Q^T}}| \\
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdDiagBand\mdLabel{0.25}{0.15}{T_m}| \\
-\verb|}| \\
-\verb|\matrixdiagram[3]{\mdLabelCenter{Q}} =| \\
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[green!25]{0}{0.5}{0.5}{1}| \\
-\verb|  \mdSpike{0.5}{0.5}{tl}| \\
-\verb|  \mdDiagBandFrom{0.5}{0.5}{1}{0}| \\
-\verb|  \mdLabel{0.3}{0.12}{\widetilde{T}_m}| \\
-\verb|}|
-\end{tabular}
-\end{tabular}
-\end{center}
-
-\subsection{Hessenberg reduction: $Q^T A Q = H$}
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{\mdLabelCenter{Q^T}}
-  \matrixdiagram[3]{\mdLabelCenter{A}}
-  \matrixdiagram[3]{\mdLabelCenter{Q}}
-  \quad=\quad
-  \matrixdiagram[3]{\mdHessenberg\mdLabel{0.7}{0.55}{H}}
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{\mdLabelCenter{Q^T}}| \\
-\verb|\matrixdiagram[3]{\mdLabelCenter{A}}| \\
-\verb|\matrixdiagram[3]{\mdLabelCenter{Q}} =| \\
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdHessenberg\mdLabel{0.7}{0.55}{H}| \\
-\verb|}|
-\end{tabular} \\
-\end{tabular}
-\end{center}
-
-\subsection{Column-bordered decomposition: $A P_m = P_m T_m + f$}
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$ \matrixdiagram[4]{\mdLabelCenter{A}}
- \matrixdiagram[2]{\mdLabelCenter{P_m}}
-  \quad=\quad
-  \matrixdiagram[2]{\mdLabelCenter{P_m}}
-  \matrixdiagram[2]{\mdDiagBand\mdLabel{0.25}{0.15}{T_m}}
-  +
-  \matrixdiagram[2]{
-    \mdFill[gray!15]{0}{0}{0.75}{1}
-    \mdVLine{0.75}
-    \mdLabel{0.875}{0.5}{f}
-  }
-$
-&
-\begin{tabular}[t]{@{}l@{}}
-\verb|\matrixdiagram[4]{\mdLabelCenter{A}}| \\
-\verb|\matrixdiagram[2]{\mdLabelCenter{P_m}} = | \\
-\verb|\matrixdiagram[2]{\mdLabelCenter{P_m}}| \\
-\verb|\matrixdiagram[2]{|\\ 
-\verb|  \mdDiagBand \mdLabel{0.25}{0.15}{T_m}| \\
-\verb|} + |  \\
-\verb|\matrixdiagram[2]{| \\
-\verb|  \mdFill[gray!15]{0}{0}{0.75}{1}| \\
-\verb|  \mdVLine{0.75} \mdLabel{0.875}{0.5}{f}| \\
-\verb|}|
-\end{tabular}
-\end{tabular}
-\end{center}
-
-
-\subsection{Schur complement structure}
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[4]{
-    \mdFill[blue!10]{0}{0.5}{0.5}{1}
-    \mdFill[green!10]{0.5}{0}{1}{0.5}
-    \mdFill[gray!10]{0.5}{0.5}{1}{1}
-    \mdVLine{0.5}
-    \mdHLine{0.5}
-    \mdLabel{0.25}{0.75}{A}
-    \mdLabel{0.75}{0.75}{B}
-    \mdLabel{0.25}{0.25}{C}
-    \mdLabel{0.75}{0.25}{S}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[4]{| \\
-\verb|\mdFill[blue!10]{0}{0.5}{0.5}{1} \mdFill[green!10]{0.5}{0}{1}{0.5}| \\
-\verb|\mdFill[gray!10]{0.5}{0.5}{1}{1}| \\ 
-\verb|\mdVLine{0.5} \mdHLine{0.5}| \\
-\verb|\mdLabel{0.25}{0.75}{A} \mdLabel{0.75}{0.75}{B}| \\
-\verb|\mdLabel{0.25}{0.25}{C} \mdLabel{0.75}{0.25}{S}}|
-\end{tabular} \\
-\end{tabular}
-\end{center}
-
-\subsection{Bordered similarity:
-  $\overline{Q}_k^T D_{k+1} \overline{Q}_k = \overline{T}_{k+1}$}
-\begin{center}
-\begin{tabular}{l@{\qquad}l}
-$  \matrixdiagram[3]{
-    \mdFill[magenta!10]{0}{0.15}{0.85}{1}
-    \mdLabel{0.5}{0.5}{\overline{Q}_{k}^T}
-    \mdLabel{0.93}{0.08}{1}
-  }
-  \matrixdiagram[3]{
-    \mdDiag
-    \draw[thick] (0,0) -- (1,0) -- (1,\mdH);
-    \mdLabel{0.25}{0.45}{D_{k+1}}
-  }
-  \matrixdiagram[3]{
-    \mdFill[magenta!10]{0}{0.15}{0.85}{1}
-    \mdLabel{0.5}{0.5}{\overline{Q}_{k}}
-    \mdLabel{0.93}{0.08}{1}
-  }
-  \quad=\quad
-  \matrixdiagram[3]{
-    \mdDiagBand
-    \mdLabel{0.25}{0.15}{\overline{T}_{k+1}}
-  }
-$
-&
-\begin{tabular}[c]{@{}l@{}}
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[magenta!10]{0}{0.15}{0.85}{1}|\\
-\verb|  \mdLabel{0.5}{0.5}{\overline{Q}_{k}^T}| \\
-\verb|  \mdLabel{0.93}{0.08}{1}| \\
-\verb|}| \\
-\verb|\matrixdiagram[3]{|\\
-\verb|  \mdDiag| \\
-\verb|  \draw[thick] (0,0) -- (1,0) -- (1,\mdH);|\\
-\verb|  \mdLabel{0.25}{0.45}{D_{k+1}}| \\
-\verb|}| \\
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdFill[magenta!10]{0}{0.15}{0.85}{1}| \\
-\verb|  \mdLabel{0.5}{0.5}{\overline{Q}_{k}}| \\
-\verb|  \mdLabel{0.93}{0.08}{1}| \\
-\verb|} = | \\
-\verb|\matrixdiagram[3]{| \\
-\verb|  \mdDiagBand| \\
-\verb|  \mdLabel{0.25}{0.15}{\overline{T}_{k+1}}| \\
-\verb|}|
-\end{tabular} \\
-\end{tabular}
-\end{center}
-
-% ===================================================================
-\section{Command reference}
-% ===================================================================
-
-\begin{center}
-\begin{tabular}{ll}
+\section*{Overview}
+
+\texttt{matrixdiagrams} draws schematic matrix diagrams (bracketed boxes with
+diagonals, shaded blocks, labels, and partition lines) directly in TikZ, for
+typesetting matrix decompositions.
+Every diagram is built with one command,
+\verb|\matrixdiagram[scale][aspect]{content}|, where \texttt{content} is a
+sequence of small drawing commands (\verb|\mdFill|, \verb|\mdLabel|,
+\verb|\mdDiagBand|, \ldots) working in a normalized coordinate system that
+automatically adapts to the diagram's scale and aspect ratio. The sections
+below give a quick reference followed by every command with a runnable
+example.
+
+\section{Quick Reference}
+
+\noindent
+\begin{tabularx}{\linewidth}{lX}
 \toprule
 \verb|\matrixdiagram[s][a]{c}|
-  & Main command. \texttt{s} = scale (def.\ 1), \texttt{a} = aspect (def.\ 1 = square). \\
+  & Main command. \\
+  & \texttt{s} = scale (default 1), \texttt{a} = aspect (default 1). \\
   & Position args below are fractions $x,y \in [0,1]$, any aspect. \\
 \midrule
 \verb|\mdDiag|
-  & Anti-diagonal $(0,H)\to(1,0)$. \\
+  & Main diagonal \\
 \verb|\mdDiagBand|
-  & Tridiagonal band, spacing $d=0.1$. \\
+  & Tridiagonal band. \\
 \verb|\mdDiagBandN{n}|
-  & $n$-diagonal band ($n$ odd), fixed step $0.1$. \\
+  & $n$-diagonal band ($n$ odd). \\
 \verb|\mdBidiagUpper|
-  & Main diagonal + super-diagonal ($d=0.1$). \\
+  & Main diagonal + super-diagonal. \\
 \verb|\mdBidiagLower|
-  & Main diagonal + sub-diagonal ($d=0.1$). \\
+  & Main diagonal + sub-diagonal. \\
 \verb|\mdHessenberg|
   & Upper-triangular outline + sub-diagonal. \\
 \verb|\mdHessenberg[color]|
   & Same with filled interior. \\
 \midrule
 \verb|\mdDiagFrom{x1}{y1}{x2}{y2}|
-  & Main diagonal, from $(x_1,y_1)$ to $(x_2,y_2)$ \\
+  & Main diagonal from $(x_1,y_1)$ to $(x_2,y_2)$ \\
 \verb|\mdDiagBandFrom{x1}{y1}{x2}{y2}|
   & Tridiagonal band, clipped. \\
 \verb|\mdDiagBandNFrom{n}{x1}{y1}{x2}{y2}|
@@ -947,16 +97,753 @@ $
 \verb|\mdLabelRaw{x}{y}{text}|
   & Raw-text label at $(x,y)$. \\
 \verb|\mdLabelCenter{text}|
-  & Math label at center $(0.5,\,H/2)$, any aspect. \\
+  & Math label at center (any aspect). \\
 \midrule
 \verb|\mdSpike{x}{y}{dir}|
   & L-corner; \texttt{dir} $\in$ \{\texttt{tl, tr, bl, br}\}. \\
 \verb|\mdBlank|
   & Empty content (brackets only). \\
 \verb|\mdH|
-  & Expands to current aspect value inside content. \\
+  & Expands to the aspect value, i.e.\ the top edge's $y$-coordinate. \\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{tabularx}
+
+
+\section{Main command}
+
+\noindent \texttt{\textbackslash matrixdiagram[scale][aspect]\{content\}}
+
+Inside \texttt{content}, the raw TikZ canvas runs $x \in [0,1]$ and
+$y \in [0,\text{aspect}]$: \texttt{aspect} is literally the $y$-coordinate of
+the top edge, and \verb|\mdH| expands to that value, so
+\texttt{(0,\textbackslash mdH)}--\texttt{(1,\textbackslash mdH)} is always the
+top edge, whatever the aspect. Every built-in positioning command
+(\verb|\mdFill|, \verb|\mdLabel|, \verb|\mdLabelRaw|, \verb|\mdHLine|,
+\verb|\mdSpike|, and the \texttt{...From} diagonal variants) instead takes
+$y$ as a plain fraction of the height, $y \in [0,1]$, and multiplies by
+\verb|\mdH| internally --- so \texttt{y=0.5} always means mid-height,
+regardless of aspect. Raw \texttt{\textbackslash draw} commands written
+directly inside \texttt{content} see the unscaled canvas, so they must
+reference \verb|\mdH| themselves, e.g.\ \texttt{(1,\textbackslash mdH)} for
+the top-right corner.
+
+\subsection{Scale (aspect = 1)}
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[1]{\mdBlank}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[2]{\mdBlank}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdBlank}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[4]{\mdBlank}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[5]{\mdBlank}$
+\end{LTXexample}
+\end{minipage}
+\begin{minipage}[t]{0.31\linewidth}
+\,
+\end{minipage} 
+
+
+\subsection{Aspect ratio (scale = 3)}
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][0.5]{
+  \mdBlank
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][1]{
+  \mdBlank
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][1.5]{
+  \mdBlank
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdBlank
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][3]{
+  \mdBlank
+}$
+\end{LTXexample}
+\end{minipage}
+\begin{minipage}[t]{0.31\linewidth}
+\,
+\end{minipage} 
+
+
+\section{Diagonal commands}
+
+\subsection{\texttt{\textbackslash mdDiag} --- main diagonal}
+
+The single diagonal line from $(0,H)$ to $(1,0)$.
+
+\begin{LTXexample}[pos=l,width=0.3\linewidth]
+$\matrixdiagram[3]{\mdDiag} \matrixdiagram[3][2]{\mdDiag}$
+\end{LTXexample}
+
+\subsection{\texttt{\textbackslash mdDiagBand} --- tridiagonal band}
+
+Three parallel anti-diagonals with spacing $d = 0.1$.
+
+\begin{LTXexample}[pos=l,width=0.24\linewidth]
+$\matrixdiagram[3]{\mdDiagBand} \matrixdiagram[3][2]{\mdDiagBand}$
+\end{LTXexample}
+
+\subsection{\texttt{\textbackslash mdDiagBandN\{n\}} --- variable band width}
+
+$n = 3, 5, 7, 9$ (spacing fixed at $d=0.1$ per diagonal); \verb|\mdDiagBandN{3}|
+is identical to \verb|\mdDiagBand|:
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdDiagBandN{3}}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdDiagBandN{5}}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdDiagBandN{7}}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdDiagBandN{9}}$
+\end{LTXexample}
+\end{minipage}
+
+\vspace{1.5em}
+
+\noindent With aspect $= 2$:
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{\mdDiagBandN{3}}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{\mdDiagBandN{5}}$
+\end{LTXexample}
+\end{minipage}
+
+
+% \begin{LTXexample}
+% $\matrixdiagram[3][2]{\mdDiagBandN{7}}$
+% \end{LTXexample}
+
+
+\section{Bidiagonal commands}
+
+\subsection{\texttt{\textbackslash mdBidiagUpper} --- main + super-diagonal}
+
+Main diagonal plus a single super-diagonal, offset $d=0.1$ toward the top-right.
+
+\begin{LTXexample}[pos=l,width=0.2\linewidth]
+$\matrixdiagram[3]{\mdBidiagUpper} \matrixdiagram[3][2]{\mdBidiagUpper}$
+\end{LTXexample}
+
+\subsection{\texttt{\textbackslash mdBidiagLower} --- main + sub-diagonal}
+
+Main diagonal plus a single sub-diagonal, offset $d=0.1$ toward the bottom-left.
+
+\begin{LTXexample}[pos=l,width=0.2\linewidth]
+$\matrixdiagram[3]{\mdBidiagLower} \matrixdiagram[3][2]{\mdBidiagLower}$
+\end{LTXexample}
+
+\section{Hessenberg command}
+
+\subsection{\texttt{\textbackslash mdHessenberg} --- outline only (default)}
+
+Upper-triangular outline $(0,H)\to(1,H)\to(1,0)$ plus one sub-diagonal.
+
+\begin{LTXexample}[pos=l,width=0.24\linewidth]
+$\matrixdiagram[3]{\mdHessenberg} \matrixdiagram[3][2]{\mdHessenberg}$
+\end{LTXexample}
+
+\subsection{\texttt{\textbackslash mdHessenberg[color]} --- with fill}
+
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdHessenberg[gray!15]}$
+\end{LTXexample}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.5\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdHessenberg[blue!15]}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdHessenberg[green!20]}$
+\end{LTXexample}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.5\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{\mdHessenberg[orange!20]}$
+\end{LTXexample}
+\end{minipage}
+
+
+\section{Fill and line commands}
+
+\subsection{\texttt{\textbackslash mdFill[color]\{x0\}\{y0\}\{x1\}\{y1\}}}
+
+The default color is \texttt{gray!20}:
+
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!30]{0}{0.5}{0.5}{1}
+}$
+\end{LTXexample}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[blue!20]{0.5}{0.5}{1}{1}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.49\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[red!20]{0}{0}{0.5}{0.5}
+}$
+\end{LTXexample}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill{0}{0}{1}{1}
+}$
+\end{LTXexample}
+\end{minipage}
+
+
+
+
+
+\vspace{1.5em}
+
+\noindent With aspect $= 2$ ($y$ is still a fraction of the height, in $[0,1]$):
+
+\noindent
+
+\begin{LTXexample}[pos=l,width=0.3\linewidth]
+$\matrixdiagram[3][2]{\mdFill[green!25]{0}{0.5}{0.5}{1}}$
+\end{LTXexample}
+
+\begin{LTXexample}[pos=l,width=0.3\linewidth]
+$\matrixdiagram[3][2]{\mdFill[blue!15]{0}{0}{1}{0.5}}$
+\end{LTXexample}
+
+% \begin{LTXexample}
+% $\matrixdiagram[3][2]{\mdFill[gray!15]{0}{0}{0.75}{1}}$
+% \end{LTXexample}
+
+
+\subsection{\texttt{\textbackslash mdVLine\{x\}} and \texttt{\textbackslash mdHLine\{y\}}}
+
+\verb|\mdVLine{x}| runs the full height at $x\in[0,1]$;
+\verb|\mdHLine{y}| runs the full width at height $y\in[0,1]$.
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdVLine{0.5}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdHLine{0.5}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdVLine{0.5}
+  \mdHLine{0.5}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdVLine{0.33}
+  \mdVLine{0.67}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdHLine{0.33}
+  \mdHLine{0.67}
+}$
+\end{LTXexample}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\,
+\end{minipage} 
+
+
+% \vspace{1.5em}
+
+% \noindent With aspect $= 2$:
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdVLine{0.5}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdHLine{0.5}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdVLine{0.5}
+  \mdHLine{0.5}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\vspace{2em}
+
+\noindent Combined with fills (block partitioning):
+
+\begin{LTXexample}[pos=l,width=0.4\linewidth]
+$\matrixdiagram[3]{
+  \mdFill[blue!15]{0}{0.5}{0.5}{1}
+  \mdFill[green!15]{0.5}{0}{1}{0.5}
+  \mdVLine{0.5}
+  \mdHLine{0.5}
+  \mdLabel{0.25}{0.75}{A}
+  \mdLabel{0.75}{0.25}{D}
+}$
+\end{LTXexample}
+
+\begin{LTXexample}[pos=l,width=0.4\linewidth]
+$\matrixdiagram[3][2]{
+  \mdFill[gray!15]{0}{0}{0.75}{1}
+  \mdVLine{0.75}
+  \mdLabel{0.375}{0.5}{A}
+  \mdLabel{0.875}{0.5}{b}
+}$
+\end{LTXexample}
+
+\section{Label commands}
+
+\subsection{\texttt{\textbackslash mdLabel\{x\}\{y\}\{text\}} --- math mode}
+
+Places \texttt{text} in math mode at $(x,y)$; the optional first argument
+fills the label's background node with that color.
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdLabel{0.2}{0.5}{A}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdLabel[red!20]{0.5}{0.5}{Q^T}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdLabel{0.5}{0.5}{\Sigma}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdDiagBand
+  \mdLabel{0.25}{0.2}{T}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\subsection{\texttt{\textbackslash mdLabelCenter\{text\}} --- always centered}
+
+Automatically placed at $(0.5,\,H/2)$ regardless of aspect ratio:
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][1]{
+  \mdLabelCenter{Q}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdLabelCenter{Q}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][3]{
+  \mdLabelCenter{Q}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][0.5]{
+  \mdLabelCenter{Q}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\subsection{\texttt{\textbackslash mdLabelRaw\{x\}\{y\}\{text\}} --- raw text}
+
+Same placement as \texttt{\textbackslash mdLabel}, but \texttt{text} is
+typeset as-is instead of in math mode --- useful for plain words like
+``dense'' or for text that already contains its own \texttt{\$...\$}.
+
+\begin{LTXexample}[pos=l,width=0.3\linewidth]
+$\matrixdiagram[3]{
+  \mdLabelRaw{0.5}{0.5}{dense}
+}
+\matrixdiagram[3]{
+  \mdLabelRaw{0.5}{0.5}{$\approx 0$}
+}$
+\end{LTXexample}
+
+\section{Spike commands}
+
+\verb|\mdSpike{x}{y}{dir}| draws an L-shaped corner at $(x,y)$.
+\texttt{tl} (top+left),\ \texttt{tr} (top+right),\ \texttt{bl} (bottom+left),\ \texttt{br} (bottom+right).
+Optionally, add a color fill via \verb|\mdSpike[color]{x}{y}{dir}|.
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdSpike{0.5}{0.5}{tl}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdSpike{0.5}{0.5}{tr}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdSpike{0.5}{0.5}{bl}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdSpike{0.5}{0.5}{br}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[blue!15]{0.5}{0.5}{1}{1}
+  \mdSpike{0.5}{0.5}{tr}
+}$
+\end{LTXexample}
+\end{minipage}
+
+% \noindent
+% \begin{minipage}[t]{0.48\linewidth}
+% \begin{LTXexample}
+% $\matrixdiagram[3]{
+%   \mdFill[red!15]{0}{0}{0.5}{0.5}
+%   \mdSpike{0.5}{0.5}{bl}
+% }$
+% \end{LTXexample}
+% \end{minipage}\hfill
+% \begin{minipage}[t]{0.48\linewidth}
+% \begin{LTXexample}
+% $\matrixdiagram[3]{
+%   \mdFill[orange!20]{0.5}{0}{1}{0.5}
+%   \mdSpike{0.5}{0.5}{br}
+% }$
+% \end{LTXexample}
+% \end{minipage}
+
+\vspace{1.5em}
+
+\noindent With aspect $= 2$, corner at mid-height $(0.5, 0.5)$:
+
+\noindent
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdFill[blue!15]{0.5}{0.5}{1}{1}
+  \mdSpike{0.5}{0.5}{tr}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.31\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdFill[red!15]{0}{0}{0.5}{0.5}
+  \mdSpike{0.5}{0.5}{bl}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\section{Clipped diagonal commands}
+
+The \texttt{...From} variants force the diagonal band from $[x_1,y_1]$ to $[x_2,y_2]$.
+Always pair with \verb|\mdSpike| at the same corner.
+
+\subsection{\texttt{\textbackslash mdDiagFrom\{x1\}\{y1\}\{x2\}\{y2\}}}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagFrom{0.5}{0.5}{1}{0}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagFrom{0.5}{0.5}{1}{0}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\subsection{\texttt{\textbackslash mdDiagBandFrom\{x1\}\{y1\}\{x2\}\{y2\}}}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagBandFrom{0.5}{0.5}{1}{0}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagBandFrom{0.5}{0.5}{1}{0}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\subsection{\texttt{\textbackslash mdDiagBandNFrom\{n\}\{x1\}\{y1\}\{x2\}\{y2\}}}
+
+$n = 3, 5, 7$:
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagBandNFrom{3}{0.5}{0.5}{1}{0}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagBandNFrom{5}{0.5}{0.5}{1}{0}
+}$
+\end{LTXexample}
+\end{minipage}
+
+
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagBandNFrom{7}{0.5}{0.5}{1}{0}
+}$
+\end{LTXexample}
+
+\section{Realistic equations}
+
+\subsection{QR decomposition: $A = QR$}
+
+\begin{LTXexample}[pos=l,width=0.5\linewidth]
+$\matrixdiagram[3][2]{\mdLabelCenter{A}}
+=
+\matrixdiagram[3][2]{\mdLabelCenter{Q}}
+\matrixdiagram[3]{\mdLabelCenter{R}}$
+\end{LTXexample}
+
+\subsection{Bidiagonalization: $A = U B V^T$}
+
+\begin{LTXexample}[pos=l,width=0.5\linewidth]
+$\matrixdiagram[3]{\mdLabelCenter{A}}
+=
+\matrixdiagram[3]{\mdLabelCenter{U}}
+\matrixdiagram[3]{\mdBidiagUpper}
+\matrixdiagram[3]{\mdLabelCenter{V^T}}$
+\end{LTXexample}
+
+\subsection{Similarity: $Q^T T_m Q = \widetilde{T}_m$}
+
+\begin{LTXexample}[pos=l,width=0.5\textwidth]
+$\matrixdiagram[3]{\mdLabelCenter{Q^T}}
+\matrixdiagram[3]{
+  \mdDiagBand
+  \mdLabel{0.25}{0.15}{T_m}
+}
+\matrixdiagram[3]{\mdLabelCenter{Q}}
+=
+\matrixdiagram[3]{
+  \mdFill[green!25]{0}{0.5}{0.5}{1}
+  \mdSpike{0.5}{0.5}{tl}
+  \mdDiagBandFrom{0.5}{0.5}{1}{0}
+  \mdLabel{0.3}{0.12}{\widetilde{T}_m}
+}$
+\end{LTXexample}
+
+\subsection{Hessenberg reduction: $Q^T A Q = H$}
+
+\begin{LTXexample}[pos=l,width=0.5\textwidth]
+$\matrixdiagram[3]{\mdLabelCenter{Q^T}}
+\matrixdiagram[3]{\mdLabelCenter{A}}
+\matrixdiagram[3]{\mdLabelCenter{Q}}
+=
+\matrixdiagram[3]{
+  \mdHessenberg
+  \mdLabel{0.7}{0.55}{H}
+}$
+\end{LTXexample}
+
+\subsection{Schur complement structure}
+
+\begin{LTXexample}[pos=l,width=0.5\textwidth]
+$\matrixdiagram[4]{
+  \mdFill[blue!10]{0}{0.5}{0.5}{1}
+  \mdFill[green!10]{0.5}{0}{1}{0.5}
+  \mdFill[gray!10]{0.5}{0.5}{1}{1}
+  \mdVLine{0.5}
+  \mdHLine{0.5}
+  \mdLabel{0.25}{0.75}{A}
+  \mdLabel{0.75}{0.75}{B}
+  \mdLabel{0.25}{0.25}{C}
+  \mdLabel{0.75}{0.25}{S}
+}$
+\end{LTXexample}
+
 
 \end{document}
