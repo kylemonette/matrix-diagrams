@@ -32,8 +32,13 @@ of every command.
 - `matrixdiagrams.sty` &mdash; the package itself; add `\usepackage{matrixdiagrams}` to use it.
 - `matrixdiagrams.tex` &mdash; source for the manual (quick reference plus a runnable example of every command).
 - `matrixdiagrams.pdf` &mdash; the compiled manual.
+- `LICENSE` &mdash; the project's MIT License.
 
 ## Contributing
 
 This project continues to be a work in progress as more commands are added, and existing ones are revised.
 Everyone is welcome to make a PR and contribute!
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
