@@ -1,20 +1,30 @@
 % \iffalse meta-comment
 %
 % matrixdiagrams.dtx
-%
 % Copyright (C) 2026 Kyle Monette
 % https://github.com/kylemonette/matrix-diagrams
 %
-% This work is licensed under the MIT License. See the LICENSE file
-% distributed with this package, or <https://opensource.org/license/mit>,
-% for the full text.
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Kyle Monette.
+%
+% This work consists of the files matrixdiagrams.dtx and
+% matrixdiagrams.ins and the derived file matrixdiagrams.sty.
 %
 % \fi
 %
 % \iffalse
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{matrixdiagrams}[2026/08/14 v3.0 Matrix diagrams]
+\ProvidesPackage{matrixdiagrams}[2026/08/15 v1.0 Matrix diagrams]
 %</package>
 %
 %<*driver>
@@ -40,7 +50,7 @@
 \usepackage{tabularx}
 \title{\texttt{matrixdiagrams.sty}}
 \author{Kyle Monette (\href{https://kylemonette.github.io}{kylemonette.github.io}) \\
-  \small Released under the MIT License}
+  \small Released under the LaTeX Project Public License (LPPL), version 1.3c}
 \date{\today}
 
 \begin{document}
@@ -48,14 +58,14 @@
 
 \section*{Overview}
 
-\texttt{matrixdiagrams} draws schematic matrix diagrams (bracketed boxes with
-diagonals, shaded blocks, labels, and partition lines) directly in TikZ, for
-typesetting matrix decompositions.
-Every diagram is built with one command,
+\texttt{matrixdiagrams} is a LaTeX package that draws schematic matrix diagrams in TikZ for the purposes of illustrating structure in matrices.
+All diagrams use
 \verb|\matrixdiagram[scale][aspect]{content}|, where \texttt{content} is a
 sequence of small drawing commands (\verb|\mdFill|, \verb|\mdLabel|,
 \verb|\mdDiagBand|, \ldots) working in a normalized coordinate system that
-automatically adapts to the diagram's scale and aspect ratio. The sections
+automatically adapts to the diagram's scale and aspect ratio.
+This easily allows one to visualize structure in matrices such as bidiagonal, tridiagonal, upper triangular, and Hessenberg varieties.
+The sections
 below give a quick reference followed by every command with a runnable
 example.
 

@@ -2,7 +2,7 @@
 
 ### Author: Kyle Monette, [kylemonette.github.io](https://kylemonette.github.io)
 
-#### Updated: August 14, 2026
+#### Updated: August 15, 2026
 
 ---
 `matrixdiagrams` is a LaTeX package that draws schematic matrix diagrams in TikZ for the purposes of illustrating structure in matrices.
@@ -66,7 +66,7 @@ your local texmf tree, or simply the same folder as your `.tex` document).
   `\usepackage{matrixdiagrams}` to use it.
 - `matrixdiagrams.pdf` &mdash; the generated manual (quick reference plus a
   runnable example of every command, plus the annotated source).
-- `LICENSE` &mdash; the project's MIT License.
+- `LICENSE` &mdash; the project's LaTeX Project Public License (LPPL), version 1.3c.
 
 ## Contributing
 
@@ -77,4 +77,4 @@ Everyone is welcome to make a PR and contribute! Edit `matrixdiagrams.dtx`
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [LaTeX Project Public License (LPPL), version 1.3c](LICENSE).
