@@ -5,14 +5,12 @@
 #### Updated: August 15, 2026
 
 ---
-`matrixdiagrams` is a LaTeX package that draws schematic matrix diagrams in TikZ for the purposes of illustrating structure in matrices.
+`matrixdiagrams` is a LaTeX package that draws schematic matrix diagrams in TikZ for the purposes of illustrating special structure in matrices, such as bidiagonal, tridiagonal, upper Hessenberg forms, etc.
 
 Every diagram is built with one command,
 `\matrixdiagram{...}`, which takes as input a sequence of drawing commands (`\mdFill`, `\mdLabel`,
 `\mdDiagBand`, etc.) working in a normalized coordinate system that
 automatically adapts to the diagram's scale and aspect ratio.
-
-This easily allows one to visualize structure in matrices such as bidiagonal, tridiagonal, upper triangular, and Hessenberg varieties.
 
 ## Sample Use
 
@@ -35,13 +33,9 @@ of every command.
 - `xparse`
 - `calc`
 
-All three ship with any full TeX distribution (TeX Live, MiKTeX, MacTeX).
-
 ## Installation
 
-**From CTAN (once accepted):** install `matrixdiagrams` through your TeX
-distribution's package manager (`tlmgr install matrixdiagrams`, MiKTeX's
-package manager, etc.).
+**From CTAN:** `matrixdiagrams` is now [available on CTAN](https://ctan.org/pkg/matrixdiagrams) and can be easily downloaded from there.
 
 **From this repository:** the package is distributed as a `.dtx`/`.ins` pair,
 the standard format for LaTeX packages. To build and install it by hand:
