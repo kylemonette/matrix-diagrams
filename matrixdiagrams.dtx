@@ -907,8 +907,8 @@ $\matrixdiagram[4]{
 %% -----------------------------------------------------------------------
 \newcommand{\md@draw@box}[3]{%
   \def\md@H{#2}%
-  \kern\md@hsep
   \vcenter{\hbox{%
+    \kern\md@hsep
     \tikz[baseline={(MDNODO.base)}]{%
       \node[inner sep=\md@innersep](MDNODO){%
         \tikz[baseline={($(MDcenter)-(0.25em,0.25em)$)},
@@ -929,8 +929,8 @@ $\matrixdiagram[4]{
         -- (MDNODO.south east)
         -- ($(MDNODO.south east)+(-\md@bracewidth,0)$);
     }%
+    \kern\md@hsep
   }}%
-  \kern\md@hsep
 }
 
 %% -----------------------------------------------------------------------
