@@ -1,5 +1,9 @@
 README.txt
 
+# CTAN packaging
+make-ctan-zip.sh
+matrixdiagrams.zip
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
