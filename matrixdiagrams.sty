@@ -27,16 +27,28 @@
 \RequirePackage{tikz}
 \RequirePackage{xparse}
 \RequirePackage{calc}
+\RequirePackage{kvoptions}
+
+%% -----------------------------------------------------------------------
+%% Package options
+%% roundedcorners=<dimen> sets the default corner radius used by every
+%% interior drawing (fills, outlines, spikes, etc.); individual diagrams
+%% can override it via \matrixdiagram's third optional argument. Default
+%% 0pt (sharp). Defines \md@roundedcorners.
+%% -----------------------------------------------------------------------
+\SetupKeyvalOptions{family=matrixdiagrams, prefix=md@}
+\DeclareStringOption[0pt]{roundedcorners}
+\ProcessKeyvalOptions*
 
 \usetikzlibrary{arrows.meta, bending, matrix, positioning, calc, arrows}
 
 %% -----------------------------------------------------------------------
 %% Internal dimensions
 %% -----------------------------------------------------------------------
-\newdimen\md@bracewidth % length of the horizontal tick at each bracket corner
-\newdimen\md@innersep   % gap between the content and the brackets
-\newdimen\md@baseunit   % size of one coordinate unit at scale=1
-\newdimen\md@hsep       % margin added left and right of every \matrixdiagram
+\newdimen\md@bracewidth   % length of the horizontal tick at each bracket corner
+\newdimen\md@innersep     % gap between the content and the brackets
+\newdimen\md@baseunit     % size of one coordinate unit at scale=1
+\newdimen\md@hsep         % margin added left and right of every \matrixdiagram
 \md@bracewidth=3pt
 \md@innersep=2pt
 \md@baseunit=0.5cm
@@ -53,17 +65,18 @@
 %% -----------------------------------------------------------------------
 %% Core drawing macro: \md@draw@box{scale}{aspect}{content}
 %% -----------------------------------------------------------------------
-\newcommand{\md@draw@box}[3]{%
+\newcommand{\md@draw@box}[4]{%
   \def\md@H{#2}%
   \vcenter{\hbox{%
     \kern\md@hsep
     \tikz[baseline={(MDNODO.base)}]{%
       \node[inner sep=\md@innersep](MDNODO){%
         \tikz[baseline={($(MDcenter)-(0.25em,0.25em)$)},
-              x={#1*\md@baseunit}, y={#1*\md@baseunit}]{%
+              x={#1*\md@baseunit}, y={#1*\md@baseunit},
+              rounded corners=#3]{%
           \coordinate (MDcenter) at (0.5,{#2*0.5});
           \draw[draw=none] (0,0) rectangle (1,#2);
-          #3
+          #4
         }%
       };
       \draw[thick]
@@ -82,10 +95,13 @@
 }
 
 %% -----------------------------------------------------------------------
-%% \matrixdiagram[scale][aspect]{content}
+%% \matrixdiagram[scale][aspect][radius]{content} ^^e2^^80^^94 radius, if omitted,
+%% falls back to \md@roundedcorners (set by the roundedcorners package option)
 %% -----------------------------------------------------------------------
-\NewDocumentCommand{\matrixdiagram}{O{1} O{1} m}{%
-  \md@draw@box{#1}{#2}{#3}%
+\NewDocumentCommand{\matrixdiagram}{O{1} O{1} o m}{%
+  \IfNoValueTF{#3}
+    {\md@draw@box{#1}{#2}{\md@roundedcorners}{#4}}
+    {\md@draw@box{#1}{#2}{#3}{#4}}%
 }
 
 %% -----------------------------------------------------------------------
@@ -234,10 +250,10 @@
 \newcommand{\mdHessenberg}[1][none]{%
   \def\md@hessarg{#1}\def\md@hessnone{none}%
   \ifx\md@hessarg\md@hessnone
-    \draw[thick] (0,\md@H) -- (1,\md@H) -- (1,0) -- (0,\md@H);%
+    \draw[thick] (0,\md@H) -- (1,\md@H) -- (1,0) -- cycle;%
   \else
     \fill[#1] (0,\md@H) -- (1,\md@H) -- (1,0) -- cycle;%
-    \draw[thick] (0,\md@H) -- (1,\md@H) -- (1,0) -- (0,\md@H);%
+    \draw[thick] (0,\md@H) -- (1,\md@H) -- (1,0) -- cycle;%
   \fi
   \md@subdiag{1}%
 }
