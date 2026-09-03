@@ -79,7 +79,7 @@ example.
 \verb|\matrixdiagram[s][a]{c}|
   & Main command. \\
   & \texttt{s} = scale (default 1), \texttt{a} = aspect (default 1). \\
-  & Position args below are fractions $x,y \in [0,1]$, any aspect. \\
+  & Position args below are $x,y \in [0,1]$, any aspect. \\
 \midrule
 \verb|\mdDiag|
   & Main diagonal \\
@@ -118,6 +118,8 @@ example.
   & Raw-text label at $(x,y)$. \\
 \verb|\mdLabelCenter{text}|
   & Math label at center (any aspect). \\
+\verb|\mdDiagLabel[pos][angle][fill]{text}|
+  & Math label on the main diagonal; \texttt{pos} $\in[0,1]$ (default $0.5$), default fill \texttt{white}. \\
 \midrule
 \verb|\mdSpike{x}{y}{dir}|
   & L-corner; \texttt{dir} $\in$ \{\texttt{tl, tr, bl, br}\}. \\
@@ -611,6 +613,53 @@ $\matrixdiagram[3]{
 }$
 \end{LTXexample}
 
+\subsection{\texttt{\textbackslash mdDiagLabel\{text\}} --- on the diagonal}
+
+Places \texttt{text} in math mode on the main diagonal, at
+fractional position \texttt{pos} $\in [0,1]$ measured from the top-left
+corner toward the bottom-right (default $0.5$, the midpoint). The optional
+second argument is a rotation angle in degrees (default $0$); the optional
+third argument fills the label's background node (default \texttt{white}), as with
+\texttt{\textbackslash mdLabel}.
+Setting the color to \texttt{none} removes all fill, but will have the (likely undesired!) effect of putting
+the text behind any diagonal lines or content, which does not look good.
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdDiagBand
+  \mdDiagLabel{T_m}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdDiagBand
+  \mdDiagLabel[0.25]{T_m}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdDiag
+  \mdDiagLabel[0.5][-45]{T_m}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdHessenberg
+  \mdDiagLabel[0.5][0][red!20]{T_m}
+}$
+\end{LTXexample}
+\end{minipage}
+
 \section{Spike commands}
 
 \verb|\mdSpike{x}{y}{dir}| draws an L-shaped corner at $(x,y)$.
@@ -991,6 +1040,14 @@ $\matrixdiagram[4]{
 %% \mdLabelCenter{text} — math label at the center (x=0.5, y=H/2)
 \newcommand{\mdLabelCenter}[1]{%
   \node at (0.5,{0.5*\md@H}) {$#1$};%
+}
+
+%% \mdDiagLabel[pos][angle][fill]{text} — math-mode label on the main
+%% diagonal; pos in [0,1] (default 0.5), measured from the top-left corner
+%% toward the bottom-right; angle in degrees (default 0); fill is an
+%% optional background color (default white)
+\NewDocumentCommand{\mdDiagLabel}{O{0.5} O{0} O{white} m}{%
+  \node[fill=#3, rotate=#2] at ({#1},{(1-#1)*\md@H}) {$#4$};%
 }
 
 %% \mdVLine{x} — full-height vertical line (0 to H)

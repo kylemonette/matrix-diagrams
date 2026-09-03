@@ -141,6 +141,14 @@
   \node at (0.5,{0.5*\md@H}) {$#1$};%
 }
 
+%% \mdDiagLabel[pos][angle][fill]{text} ^^e2^^80^^94 math-mode label on the main
+%% diagonal; pos in [0,1] (default 0.5), measured from the top-left corner
+%% toward the bottom-right; angle in degrees (default 0); fill is an
+%% optional background color (default white)
+\NewDocumentCommand{\mdDiagLabel}{O{0.5} O{0} O{white} m}{%
+  \node[fill=#3, rotate=#2] at ({#1},{(1-#1)*\md@H}) {$#4$};%
+}
+
 %% \mdVLine{x} ^^e2^^80^^94 full-height vertical line (0 to H)
 \newcommand{\mdVLine}[1]{%
   \draw[thick] (#1,0) -- (#1,\md@H);%
