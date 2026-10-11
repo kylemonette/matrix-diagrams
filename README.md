@@ -2,7 +2,7 @@
 
 ### Author: Kyle Monette, [kylemonette.github.io](https://kylemonette.github.io)
 
-#### Updated: September 3, 2026
+#### Updated: October 11, 2026
 
 ---
 `matrixdiagrams` is a LaTeX package that draws schematic matrix diagrams in TikZ for the purposes of illustrating special structure in matrices, such as bidiagonal, tridiagonal, upper Hessenberg forms, etc.

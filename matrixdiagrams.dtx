@@ -24,7 +24,7 @@
 % \iffalse
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{matrixdiagrams}[2026/09/03 v1.2 Matrix diagrams]
+\ProvidesPackage{matrixdiagrams}[2026/10/11 v1.3 Matrix diagrams]
 %</package>
 %
 %<*driver>
@@ -51,7 +51,7 @@
 \title{\texttt{matrixdiagrams.sty}}
 \author{Kyle Monette (\href{https://kylemonette.github.io}{kylemonette.github.io}) \\
   \small Released under the LaTeX Project Public License (LPPL), version 1.3c}
-\date{\today\ --- Version 1.2}
+\date{\today\ --- Version 1.3}
 
 \begin{document}
 \maketitle
@@ -74,7 +74,7 @@ example.
 \section{Quick Reference}
 
 \noindent
-\begin{tabularx}{\linewidth}{lX}
+\begin{tabular}{lp{0.53\linewidth}}
 \toprule
 \verb|\matrixdiagram[s][a][r]{c}|
   & Main command. \\
@@ -125,12 +125,17 @@ example.
 \midrule
 \verb|\mdSpike{x}{y}{dir}|
   & L-corner; \texttt{dir} $\in$ \{\texttt{tl, tr, bl, br}\}. \\
+\verb|\mdBidiagSpike[pos]{dir}|
+  & Bidiagonal block to \texttt{pos} on the diagonal, plus a spike;
+    \texttt{dir} $\in$ \{\texttt{up, left}\}. \\
+\verb|\mdBidiagSpike*[pos]{dir}|
+  & Same, with the bidiagonal continued to the bottom-right. \\
 \verb|\mdBlank|
   & Empty content (brackets only). \\
 \verb|\mdH|
   & Expands to the aspect value, i.e.\ the top edge's $y$-coordinate. \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 
 
 \section{Main command}
@@ -705,9 +710,11 @@ $\matrixdiagram[3]{
 
 \section{Spike commands}
 
+\subsection{\texttt{\textbackslash mdSpike\{x\}\{y\}\{dir\}} --- L-shaped corners}
+
 \verb|\mdSpike{x}{y}{dir}| draws an L-shaped corner at $(x,y)$.
 \texttt{tl} (top+left),\ \texttt{tr} (top+right),\ \texttt{bl} (bottom+left),\ \texttt{br} (bottom+right).
-Optionally, add a color fill via \verb|\mdSpike[color]{x}{y}{dir}|.
+To shade the block, pair it with \verb|\mdFill| (see below).
 
 \noindent
 \begin{minipage}[t]{0.48\linewidth}
@@ -803,6 +810,68 @@ $\matrixdiagram[3][2]{
 $\matrixdiagram[3][2]{
   \mdFill[red!15]{0}{0}{0.5}{0.5}
   \mdSpike{0.5}{0.5}{bl}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\subsection{\texttt{\textbackslash mdBidiagSpike[pos]\{dir\}} --- bidiagonal spikes}
+
+\verb|\mdBidiagSpike[pos]{dir}| draws a bidiagonal block from the top-left
+corner to the point at \texttt{pos} on the main diagonal (\texttt{pos}
+$\in[0,1]$, default $0.5$, measured as in \verb|\mdDiagLabel|), plus a spike
+coming off the off-diagonal line.
+\texttt{up} gives an upper bidiagonal block with a column spike at
+$x=\texttt{pos}$, from the super-diagonal up to the top edge;
+\texttt{left} gives a lower bidiagonal block with a row spike at
+$y=1-\texttt{pos}$, from the sub-diagonal across to the left edge.
+The starred form \verb|\mdBidiagSpike*| continues the bidiagonal past the
+spike to the bottom-right corner.
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdBidiagSpike[0.5]{up}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdBidiagSpike[0.5]{left}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdBidiagSpike*[0.5]{up}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdBidiagSpike*[0.4]{left}
+}$
+\end{LTXexample}
+\end{minipage}
+
+\noindent
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3]{
+  \mdFill[green!20]{0}{0.5}{0.5}{1}
+  \mdBidiagSpike*[0.5]{up}
+}$
+\end{LTXexample}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{LTXexample}
+$\matrixdiagram[3][2]{
+  \mdBidiagSpike*[0.5]{up}
 }$
 \end{LTXexample}
 \end{minipage}
@@ -1165,6 +1234,42 @@ $\matrixdiagram[4]{
   \else\ifx\md@spikedir\md@bl \draw[thick] (#1,0) -- (#1,{#2*\md@H}) -- (0,{#2*\md@H});%
   \else\ifx\md@spikedir\md@br \draw[thick] (#1,0) -- (#1,{#2*\md@H}) -- (1,{#2*\md@H});%
   \fi\fi\fi\fi
+}
+
+%% -----------------------------------------------------------------------
+%% Bidiagonal spike command
+%% \mdBidiagSpike[pos]{dir} — bidiagonal block from the top-left corner to
+%% the point at pos on the main diagonal (pos in [0,1], default 0.5,
+%% measured as in \mdDiagLabel), plus a spike off the off-diagonal line:
+%%   up:   upper bidiagonal; vertical spike at x=pos from the
+%%         super-diagonal up to the top edge
+%%   left: lower bidiagonal; horizontal spike at y=1-pos from the
+%%         sub-diagonal across to the left edge
+%% \mdBidiagSpike*[pos]{dir} — same, but the bidiagonal continues past the
+%% spike to the bottom-right corner.
+%% -----------------------------------------------------------------------
+\def\md@up{up}\def\md@left{left}
+
+\NewDocumentCommand{\mdBidiagSpike}{s O{0.5} m}{%
+  \def\md@spikedir{#3}%
+  \ifx\md@spikedir\md@up
+    \IfBooleanTF{#1}
+      {\mdBidiagUpper
+       \draw[thick] ({#2},{(1-#2+\md@bandstep)*\md@H}) -- ({#2},\md@H);}
+      {\draw[thick] (0,\md@H) -- ({#2},{(1-#2)*\md@H});%
+       \draw[thick] (\md@bandstep,\md@H)
+         -- ({#2},{(1-#2+\md@bandstep)*\md@H}) -- ({#2},\md@H);}%
+  \else\ifx\md@spikedir\md@left
+    \IfBooleanTF{#1}
+      {\mdBidiagLower
+       \draw[thick] ({#2-\md@bandstep},{(1-#2)*\md@H}) -- (0,{(1-#2)*\md@H});}
+      {\draw[thick] (0,\md@H) -- ({#2},{(1-#2)*\md@H});%
+       \draw[thick] (0,{(1-\md@bandstep)*\md@H})
+         -- ({#2-\md@bandstep},{(1-#2)*\md@H}) -- (0,{(1-#2)*\md@H});}%
+  \else
+    \PackageError{matrixdiagrams}{Unknown \string\mdBidiagSpike\space
+      direction `#3'}{Use `up' or `left'.}%
+  \fi\fi
 }
 
 %% -----------------------------------------------------------------------

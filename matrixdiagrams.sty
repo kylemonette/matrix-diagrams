@@ -23,7 +23,7 @@
 %% The Current Maintainer of this work is Kyle Monette.
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{matrixdiagrams}[2026/09/03 v1.2 Matrix diagrams]
+\ProvidesPackage{matrixdiagrams}[2026/10/11 v1.3 Matrix diagrams]
 \RequirePackage{tikz}
 \RequirePackage{xparse}
 \RequirePackage{calc}
@@ -221,6 +221,42 @@
   \else\ifx\md@spikedir\md@bl \draw[thick] (#1,0) -- (#1,{#2*\md@H}) -- (0,{#2*\md@H});%
   \else\ifx\md@spikedir\md@br \draw[thick] (#1,0) -- (#1,{#2*\md@H}) -- (1,{#2*\md@H});%
   \fi\fi\fi\fi
+}
+
+%% -----------------------------------------------------------------------
+%% Bidiagonal spike command
+%% \mdBidiagSpike[pos]{dir} ^^e2^^80^^94 bidiagonal block from the top-left corner to
+%% the point at pos on the main diagonal (pos in [0,1], default 0.5,
+%% measured as in \mdDiagLabel), plus a spike off the off-diagonal line:
+%%   up:   upper bidiagonal; vertical spike at x=pos from the
+%%         super-diagonal up to the top edge
+%%   left: lower bidiagonal; horizontal spike at y=1-pos from the
+%%         sub-diagonal across to the left edge
+%% \mdBidiagSpike*[pos]{dir} ^^e2^^80^^94 same, but the bidiagonal continues past the
+%% spike to the bottom-right corner.
+%% -----------------------------------------------------------------------
+\def\md@up{up}\def\md@left{left}
+
+\NewDocumentCommand{\mdBidiagSpike}{s O{0.5} m}{%
+  \def\md@spikedir{#3}%
+  \ifx\md@spikedir\md@up
+    \IfBooleanTF{#1}
+      {\mdBidiagUpper
+       \draw[thick] ({#2},{(1-#2+\md@bandstep)*\md@H}) -- ({#2},\md@H);}
+      {\draw[thick] (0,\md@H) -- ({#2},{(1-#2)*\md@H});%
+       \draw[thick] (\md@bandstep,\md@H)
+         -- ({#2},{(1-#2+\md@bandstep)*\md@H}) -- ({#2},\md@H);}%
+  \else\ifx\md@spikedir\md@left
+    \IfBooleanTF{#1}
+      {\mdBidiagLower
+       \draw[thick] ({#2-\md@bandstep},{(1-#2)*\md@H}) -- (0,{(1-#2)*\md@H});}
+      {\draw[thick] (0,\md@H) -- ({#2},{(1-#2)*\md@H});%
+       \draw[thick] (0,{(1-\md@bandstep)*\md@H})
+         -- ({#2-\md@bandstep},{(1-#2)*\md@H}) -- (0,{(1-#2)*\md@H});}%
+  \else
+    \PackageError{matrixdiagrams}{Unknown \string\mdBidiagSpike\space
+      direction `#3'}{Use `up' or `left'.}%
+  \fi\fi
 }
 
 %% -----------------------------------------------------------------------
