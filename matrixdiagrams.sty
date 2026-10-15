@@ -237,25 +237,82 @@
 %% -----------------------------------------------------------------------
 \def\md@up{up}\def\md@left{left}
 
+%% \md@spike@up{pos} ^^e2^^80^^94 column spike at x=pos, from the super-diagonal up to
+%% the top edge
+\newcommand{\md@spike@up}[1]{%
+  \draw[thick] ({#1},{(1-#1+\md@bandstep)*\md@H}) -- ({#1},\md@H);%
+}
+%% \md@spike@left{pos} ^^e2^^80^^94 row spike at y=1-pos, from the sub-diagonal across
+%% to the left edge
+\newcommand{\md@spike@left}[1]{%
+  \draw[thick] ({#1-\md@bandstep},{(1-#1)*\md@H}) -- (0,{(1-#1)*\md@H});%
+}
+
 \NewDocumentCommand{\mdBidiagSpike}{s O{0.5} m}{%
   \def\md@spikedir{#3}%
   \ifx\md@spikedir\md@up
     \IfBooleanTF{#1}
-      {\mdBidiagUpper
-       \draw[thick] ({#2},{(1-#2+\md@bandstep)*\md@H}) -- ({#2},\md@H);}
+      {\mdBidiagUpper\md@spike@up{#2}}
       {\draw[thick] (0,\md@H) -- ({#2},{(1-#2)*\md@H});%
        \draw[thick] (\md@bandstep,\md@H)
          -- ({#2},{(1-#2+\md@bandstep)*\md@H}) -- ({#2},\md@H);}%
   \else\ifx\md@spikedir\md@left
     \IfBooleanTF{#1}
-      {\mdBidiagLower
-       \draw[thick] ({#2-\md@bandstep},{(1-#2)*\md@H}) -- (0,{(1-#2)*\md@H});}
+      {\mdBidiagLower\md@spike@left{#2}}
       {\draw[thick] (0,\md@H) -- ({#2},{(1-#2)*\md@H});%
        \draw[thick] (0,{(1-\md@bandstep)*\md@H})
          -- ({#2-\md@bandstep},{(1-#2)*\md@H}) -- (0,{(1-#2)*\md@H});}%
   \else
     \PackageError{matrixdiagrams}{Unknown \string\mdBidiagSpike\space
       direction `#3'}{Use `up' or `left'.}%
+  \fi\fi
+}
+
+%% -----------------------------------------------------------------------
+%% Hessenberg spike command
+%% \mdHessenbergSpike[pos][fillcolor]{dir} ^^e2^^80^^94 Hessenberg outline (filled if
+%% fillcolor is given, as in \mdHessenberg) plus a spike off the
+%% off-diagonal line at pos on the main diagonal (pos in [0,1], default 0.5):
+%%   left: upper Hessenberg; row spike at y=1-pos, from the sub-diagonal
+%%         across to the left edge
+%%   up:   lower Hessenberg; column spike at x=pos, from the super-diagonal
+%%         up to the top edge
+%% -----------------------------------------------------------------------
+\NewDocumentCommand{\mdHessenbergSpike}{O{0.5} O{none} m}{%
+  \def\md@spikedir{#3}%
+  \ifx\md@spikedir\md@left
+    \mdHessenberg[#2]\md@spike@left{#1}%
+  \else\ifx\md@spikedir\md@up
+    \mdHessenbergLower[#2]\md@spike@up{#1}%
+  \else
+    \PackageError{matrixdiagrams}{Unknown \string\mdHessenbergSpike\space
+      direction `#3'}{Use `left' or `up'.}%
+  \fi\fi
+}
+
+%% -----------------------------------------------------------------------
+%% Diagonal + bidiagonal spike command
+%% \mdDiagBidiagSpike[pos]{dir} ^^e2^^80^^94 diagonal block from the top-left corner
+%% to the point at pos on the main diagonal (pos in [0,1], default 0.5),
+%% a spike, then a bidiagonal from the spike to the bottom-right corner:
+%%   up:   column spike at x=pos from the top edge down to the
+%%         super-diagonal, which continues to the bottom-right
+%%   left: row spike at y=1-pos from the left edge across to the
+%%         sub-diagonal, which continues to the bottom-right
+%% -----------------------------------------------------------------------
+\NewDocumentCommand{\mdDiagBidiagSpike}{O{0.5} m}{%
+  \def\md@spikedir{#2}%
+  \ifx\md@spikedir\md@up
+    \draw[thick] (0,\md@H) -- (1,0);%
+    \draw[thick] ({#1},\md@H) -- ({#1},{(1-#1+\md@bandstep)*\md@H})
+      -- (1,{\md@bandstep*\md@H});%
+  \else\ifx\md@spikedir\md@left
+    \draw[thick] (0,\md@H) -- (1,0);%
+    \draw[thick] (0,{(1-#1)*\md@H}) -- ({#1-\md@bandstep},{(1-#1)*\md@H})
+      -- ({1-\md@bandstep},0);%
+  \else
+    \PackageError{matrixdiagrams}{Unknown \string\mdDiagBidiagSpike\space
+      direction `#2'}{Use `up' or `left'.}%
   \fi\fi
 }
 
@@ -278,8 +335,9 @@
 }
 
 %% -----------------------------------------------------------------------
-%% Hessenberg command
-%% \mdHessenberg[fillcolor]
+%% Hessenberg commands
+%% \mdHessenberg[fillcolor] (alias \mdHessenbergUpper), and its transpose
+%% \mdHessenbergLower[fillcolor]
 %%   No argument: outline only (default).
 %%   With color argument: filled triangle + outline.
 %% -----------------------------------------------------------------------
@@ -292,6 +350,20 @@
     \draw[thick] (0,\md@H) -- (1,\md@H) -- (1,0) -- cycle;%
   \fi
   \md@subdiag{1}%
+}
+
+%% \mdHessenbergUpper[fillcolor] ^^e2^^80^^94 alias for \mdHessenberg
+\let\mdHessenbergUpper\mdHessenberg
+
+%% \mdHessenbergLower[fillcolor] ^^e2^^80^^94 lower-triangular outline + super-diagonal;
+%% the transpose of \mdHessenberg
+\newcommand{\mdHessenbergLower}[1][none]{%
+  \def\md@hessarg{#1}\def\md@hessnone{none}%
+  \ifx\md@hessarg\md@hessnone\else
+    \fill[#1] (0,\md@H) -- (0,0) -- (1,0) -- cycle;%
+  \fi
+  \draw[thick] (0,\md@H) -- (0,0) -- (1,0) -- cycle;%
+  \md@superdiag{1}%
 }
 
 %% \mdBlank ^^e2^^80^^94 empty content (brackets only)
