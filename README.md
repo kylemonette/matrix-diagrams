@@ -21,6 +21,7 @@ automatically adapts to the diagram's scale and aspect ratio.
 | `\matrixdiagram{\mdHessenberg}` | An upper-Hessenberg outline. |
 | `\matrixdiagram{\mdFill[red!20]{0}{0.5}{1}{1}}` | The top half of the matrix shaded red. |
 | `\matrixdiagram{\mdLabel{0.5}{0.5}{A}}` | The label $A$ centered in the matrix. |
+| `\usepackage[parentheses]{matrixdiagrams}` | Every diagram drawn with parentheses instead of square brackets. |
 
 See `matrixdiagrams.pdf` for the full command reference and a runnable example
 of every command.

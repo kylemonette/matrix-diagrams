@@ -48,6 +48,11 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true}
 \usepackage{tabularx}
+% Doc-only: render one group with the parentheses package option switched
+% on, so the manual can show both delimiter styles side by side.
+\makeatletter
+\newcommand{\mdDocWithParens}[1]{{\md@parenthesestrue#1}}
+\makeatother
 \title{\texttt{matrixdiagrams.sty}}
 \author{Kyle Monette (\href{https://kylemonette.github.io}{kylemonette.github.io}) \\
   \small Released under the LaTeX Project Public License (LPPL), version 1.3c}
@@ -82,6 +87,8 @@ example.
   & \texttt{r} = corner radius for interior drawings (default: the
     \texttt{roundedcorners} package option, else \texttt{0pt}). \\
   & Position args below are $x,y \in [0,1]$, any aspect. \\
+\verb|\usepackage[parentheses]|
+  & Parentheses instead of square brackets, for every diagram. \\
 \midrule
 \verb|\mdDiag|
   & Main diagonal \\
@@ -286,6 +293,32 @@ $\matrixdiagram[3][1][4pt]{
 }$
 \end{LTXexample}
 \end{minipage}
+
+\subsection{Parentheses}
+
+Diagrams are drawn with square brackets by default. Load the package with
+the \verb|parentheses| option to draw every diagram in the document with
+parentheses instead. These are the math font's own extensible parentheses
+(the same ones \texttt{pmatrix} uses), sized to span the full diagram:
+\begin{quote}
+\verb|\usepackage[parentheses]{matrixdiagrams}|
+\end{quote}
+This is a document-wide choice; there is no per-diagram override. It
+can be combined with the \verb|roundedcorners| option:
+\begin{quote}
+\verb|\usepackage[parentheses,roundedcorners=2pt]{matrixdiagrams}|
+\end{quote}
+The same diagrams without and with the option:
+\[
+\matrixdiagram[3]{\mdHessenberg[gray!20]}
+\matrixdiagram[3][2]{\mdLabelCenter{Q}}
+\matrixdiagram[3]{\mdDiagBand}
+\qquad
+\mdDocWithParens{%
+  \matrixdiagram[3]{\mdHessenberg[gray!20]}
+  \matrixdiagram[3][2]{\mdLabelCenter{Q}}
+  \matrixdiagram[3]{\mdDiagBand}}
+\]
 
 \section{Diagonal commands}
 
@@ -1165,9 +1198,13 @@ $\matrixdiagram[4]{
 %% interior drawing (fills, outlines, spikes, etc.); individual diagrams
 %% can override it via \matrixdiagram's third optional argument. Default
 %% 0pt (sharp). Defines \md@roundedcorners.
+%% parentheses draws every diagram's border with the math font's
+%% parentheses instead of square brackets. Document-wide only; no per-diagram override.
+%% Defines \ifmd@parentheses.
 %% -----------------------------------------------------------------------
 \SetupKeyvalOptions{family=matrixdiagrams, prefix=md@}
 \DeclareStringOption[0pt]{roundedcorners}
+\DeclareBoolOption[false]{parentheses}
 \ProcessKeyvalOptions*
 
 \usetikzlibrary{arrows.meta, bending, matrix, positioning, calc, arrows}
@@ -1193,33 +1230,57 @@ $\matrixdiagram[4]{
 \def\md@bandstep{0.1}
 
 %% -----------------------------------------------------------------------
-%% Core drawing macro: \md@draw@box{scale}{aspect}{content}
+%% \md@draw@brackets — draws square brackets around node MDNODO
+%% -----------------------------------------------------------------------
+\newcommand{\md@draw@brackets}{%
+  \draw[thick]
+    (MDNODO.north west)+(\md@bracewidth,0)
+    -- (MDNODO.north west)
+    -- (MDNODO.south west)
+    -- ($(MDNODO.south west)+(\md@bracewidth,0)$);
+  \draw[thick]
+    (MDNODO.north east)+(-\md@bracewidth,0)
+    -- (MDNODO.north east)
+    -- (MDNODO.south east)
+    -- ($(MDNODO.south east)+(-\md@bracewidth,0)$);
+}
+
+%% -----------------------------------------------------------------------
+%% \md@draw@picture{scale}{aspect}{radius}{content} — the diagram itself:
+%% node MDNODO holding the content canvas, plus square brackets unless the
+%% parentheses package option is set
+%% -----------------------------------------------------------------------
+\newcommand{\md@draw@picture}[4]{%
+  \tikz[baseline={(MDNODO.base)}]{%
+    \node[inner sep=\md@innersep](MDNODO){%
+      \tikz[baseline={($(MDcenter)-(0.25em,0.25em)$)},
+            x={#1*\md@baseunit}, y={#1*\md@baseunit},
+            rounded corners=#3]{%
+        \coordinate (MDcenter) at (0.5,{#2*0.5});
+        \draw[draw=none] (0,0) rectangle (1,#2);
+        #4
+      }%
+    };
+    \ifmd@parentheses\else\md@draw@brackets\fi
+  }%
+}
+
+%% -----------------------------------------------------------------------
+%% Core drawing macro: \md@draw@box{scale}{aspect}{radius}{content}
+%% With the parentheses option, the picture is wrapped in the math font's
+%% extensible \left( ... \right), as in pmatrix; \delimiterfactor and
+%% \delimitershortfall are set so the parentheses span the full picture.
 %% -----------------------------------------------------------------------
 \newcommand{\md@draw@box}[4]{%
   \def\md@H{#2}%
   \vcenter{\hbox{%
     \kern\md@hsep
-    \tikz[baseline={(MDNODO.base)}]{%
-      \node[inner sep=\md@innersep](MDNODO){%
-        \tikz[baseline={($(MDcenter)-(0.25em,0.25em)$)},
-              x={#1*\md@baseunit}, y={#1*\md@baseunit},
-              rounded corners=#3]{%
-          \coordinate (MDcenter) at (0.5,{#2*0.5});
-          \draw[draw=none] (0,0) rectangle (1,#2);
-          #4
-        }%
-      };
-      \draw[thick]
-        (MDNODO.north west)+(\md@bracewidth,0)
-        -- (MDNODO.north west)
-        -- (MDNODO.south west)
-        -- ($(MDNODO.south west)+(\md@bracewidth,0)$);
-      \draw[thick]
-        (MDNODO.north east)+(-\md@bracewidth,0)
-        -- (MDNODO.north east)
-        -- (MDNODO.south east)
-        -- ($(MDNODO.south east)+(-\md@bracewidth,0)$);
-    }%
+    \ifmd@parentheses
+      $\delimiterfactor=1000 \delimitershortfall=0pt
+       \left(\vcenter{\hbox{\md@draw@picture{#1}{#2}{#3}{#4}}}\right)$%
+    \else
+      \md@draw@picture{#1}{#2}{#3}{#4}%
+    \fi
     \kern\md@hsep
   }}%
 }
